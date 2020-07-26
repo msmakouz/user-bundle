@@ -1,0 +1,38 @@
+{
+  "name": "zentlix/user-bundle",
+  "version": "0.1.0",
+  "type": "symfony-bundle",
+  "description": "Zentlix User bundle",
+  "license": "proprietary",
+  "require": {
+    "php": "^7.4.4",
+    "symfony/mailer": "4.4.*",
+    "symfony/security-bundle": "4.4.*",
+    "odolbeau/phone-number-bundle": "^3.1",
+    "zentlix/main-bundle": "0.1.*"
+  },
+  "require-dev": {
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "autoload": {
+    "psr-4": {
+      "Zentlix\\UserBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test" : "./vendor/bin/simple-phpunit"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "4.4.*"
+    }
+  }
+}

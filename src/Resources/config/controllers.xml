@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false"/>
+        <service id="zentlix_user.user_controller"
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\UserController"
+                 public="true">
+            <argument type="service" id="zentlix_main.sites"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <argument type="service" id="zentlix_main.query_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="zentlix_user.admin.admin_settings_controller"
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\AdminSettingsController"
+                 public="true">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="zentlix_main.bundles"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <argument type="service" id="zentlix_main.query_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="zentlix_user.admin.group_controller"
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\GroupController"
+                 public="true">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="zentlix_main.bundles"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <argument type="service" id="zentlix_main.query_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="zentlix_user.admin.journal_controller"
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\JournalController"
+                 public="true">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="zentlix_main.bundles"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <argument type="service" id="zentlix_main.query_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="zentlix_user.admin.mailer_template_controller"
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\MailerController"
+                 public="true">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="zentlix_main.bundles"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <argument type="service" id="zentlix_main.query_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+        <service id="zentlix_user.admin.user_controller"
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\UserController"
+                 public="true">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.csrf.token_manager"/>
+            <argument type="service" id="zentlix_main.bundles"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <argument type="service" id="zentlix_main.query_bus"/>
+            <tag name="controller.service_arguments"/>
+        </service>
+    </services>
+</container>

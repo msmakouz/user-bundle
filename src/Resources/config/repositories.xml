@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="Zentlix\UserBundle\Domain\Admin\Repository\NotificationRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\Journal\Repository\JournalRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\User\Repository\SiteRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+        <service id="Zentlix\UserBundle\Domain\User\Repository\UserRepository">
+            <argument type="service" id="Doctrine\Common\Persistence\ManagerRegistry"/>
+            <tag name="doctrine.repository_service"/>
+        </service>
+    </services>
+</container>

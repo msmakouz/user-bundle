@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="zentlix_user.group.create_form" class="Zentlix\UserBundle\UI\Http\Web\Form\Group\CreateForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.helper"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
+            <tag name="form.type"/>
+        </service>
+        <service id="zentlix_user.group.update_form" class="Zentlix\UserBundle\UI\Http\Web\Form\Group\UpdateForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="security.helper"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="zentlix_user.mailer.template.create_form" class="Zentlix\UserBundle\UI\Http\Web\Form\Mailer\CreateForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository"/>
+            <argument type="service" id="zentlix_user.mailer_providers"/>
+            <argument type="service" id="Zentlix\MainBundle\Domain\Site\Repository\SiteRepository"/>
+            <tag name="form.type"/>
+        </service>
+        <service id="zentlix_user.mailer.template.update_form" class="Zentlix\UserBundle\UI\Http\Web\Form\Mailer\UpdateForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository"/>
+            <argument type="service" id="zentlix_user.mailer_providers"/>
+            <argument type="service" id="Zentlix\MainBundle\Domain\Site\Repository\SiteRepository"/>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="zentlix_user.user.create_form" class="Zentlix\UserBundle\UI\Http\Web\Form\User\CreateForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
+            <tag name="form.type"/>
+        </service>
+        <service id="zentlix_user.user.update_form" class="Zentlix\UserBundle\UI\Http\Web\Form\User\UpdateForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
+            <tag name="form.type"/>
+        </service>
+
+        <service id="zentlix_user.widget.form" class="Zentlix\UserBundle\UI\Http\Web\Form\Widget\Form">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <tag name="form.type"/>
+        </service>
+    </services>
+</container>

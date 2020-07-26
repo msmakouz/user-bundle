@@ -1,0 +1,13 @@
+{% extends  template ~ '/layouts/base.html.twig' %}
+{% block body %}
+    {% if error is defined %}
+        <div class="alert alert-danger" role="alert">
+            {{ error }}
+        </div>
+    {% endif %}
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-sm btn-primary" type="submit">{{ 'zentlix_user.register' | trans }}</button>
+    {{ form_end(form) }}
+{% endblock %}

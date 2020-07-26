@@ -1,0 +1,50 @@
+security:
+  encoders:
+    Zentlix\UserBundle\Domain\User\Entity\User:
+      algorithm: auto
+  providers:
+    users:
+      entity:
+        class: Zentlix\UserBundle\Domain\User\Entity\User
+        property: email
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    admin_secured_area:
+      pattern:   ^/%env(ADMIN_PATH)%
+      anonymous: true
+      context: zentlix_auth
+      guard:
+        authenticators:
+          - Zentlix\UserBundle\Domain\User\Service\Authenticator
+        entry_point: Zentlix\UserBundle\Domain\User\Service\Authenticator
+      provider: users
+      form_login:
+        login_path: admin.login
+        check_path: /%env(ADMIN_PATH)%/login
+        default_target_path: /%env(ADMIN_PATH)%
+      logout:
+        path: app_logout
+
+    user_secured_area:
+      pattern:   ^/
+      anonymous: true
+      context: zentlix_auth
+      guard:
+        authenticators:
+          - Zentlix\UserBundle\Domain\User\Service\Authenticator
+        entry_point: Zentlix\UserBundle\Domain\User\Service\Authenticator
+      provider: users
+      form_login:
+        login_path: app_login
+        check_path: /login
+        default_target_path: /profile
+      logout:
+        path: app_logout
+  access_control:
+    - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/%env(ADMIN_PATH)%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/%env(ADMIN_PATH)%, roles: ROLE_ADMIN }
+    - { path: ^/profile, roles: ROLE_USER }

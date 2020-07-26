@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services
+        http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="zentlix_user.dashboard_widget.groups_count" class="Zentlix\UserBundle\UI\Http\Web\DashboardWidget\GroupsCount">
+            <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
+            <tag name="zentlix_main.admin_widget"/>
+        </service>
+        <service id="zentlix_user.dashboard_widget.users_count" class="Zentlix\UserBundle\UI\Http\Web\DashboardWidget\UsersCount">
+            <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\UserRepository"/>
+            <tag name="zentlix_main.admin_widget"/>
+        </service>
+    </services>
+</container>

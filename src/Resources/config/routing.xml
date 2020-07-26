@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<routes xmlns="http://symfony.com/schema/routing"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://symfony.com/schema/routing
+        https://symfony.com/schema/routing/routing-1.0.xsd">
+
+    <route id="app_login" path="/login">
+        <default key="_controller">zentlix_user.user_controller::login</default>
+    </route>
+    <route id="app_logout" path="/logout">
+        <default key="_controller">zentlix_user.user_controller::logout</default>
+    </route>
+    <route id="admin.login" path="/backend/login">
+        <default key="_controller">zentlix_user.admin.user_controller::login</default>
+    </route>
+
+    <route id="admin.journal.list" path="/backend/journal">
+        <default key="_controller">zentlix_user.admin.journal_controller::index</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+
+    <route id="admin.user.list" path="/backend/users/list">
+        <default key="_controller">zentlix_user.admin.user_controller::index</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.user.create" path="/backend/users/create">
+        <default key="_controller">zentlix_user.admin.user_controller::create</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.user.update" path="/backend/users/{id}/edit">
+        <default key="_controller">zentlix_user.admin.user_controller::update</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.user.delete" path="/backend/users/{id}/delete">
+        <default key="_controller">zentlix_user.admin.user_controller::delete</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+
+    <route id="admin.group.list" path="/backend/users/groups/list">
+        <default key="_controller">zentlix_user.admin.group_controller::index</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.group.create" path="/backend/users/groups/create">
+        <default key="_controller">zentlix_user.admin.group_controller::create</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.group.update" path="/backend/users/groups/{id}/edit">
+        <default key="_controller">zentlix_user.admin.group_controller::update</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.group.delete" path="/backend/users/groups/{id}/delete">
+        <default key="_controller">zentlix_user.admin.group_controller::delete</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+
+    <route id="admin.settings.locale" path="/backend/admin/settings/locale">
+        <default key="_controller">zentlix_user.admin.admin_settings_controller::locale</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.widgets.update" path="/backend/admin/settings/widgets">
+        <default key="_controller">zentlix_user.admin.admin_settings_controller::widgets</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+
+    <route id="admin.mailer.list" path="/backend/settings/mailer/templates/list">
+        <default key="_controller">zentlix_user.admin.mailer_template_controller::index</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.mailer.create" path="/backend/settings/mailer/templates/create">
+        <default key="_controller">zentlix_user.admin.mailer_template_controller::create</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.mailer.update" path="/backend/settings/mailer/templates/{id}/edit">
+        <default key="_controller">zentlix_user.admin.mailer_template_controller::update</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+    <route id="admin.mailer.delete" path="/backend/settings/mailer/templates/{id}/delete">
+        <default key="_controller">zentlix_user.admin.mailer_template_controller::delete</default>
+        <condition>request.isXmlHttpRequest()</condition>
+    </route>
+</routes>
