@@ -1,6 +1,5 @@
 {
   "name": "zentlix/user-bundle",
-  "version": "0.1.0",
   "type": "symfony-bundle",
   "description": "Zentlix User bundle",
   "license": "proprietary",
@@ -29,6 +28,7 @@
   "scripts": {
     "test" : "./vendor/bin/simple-phpunit"
   },
+  "minimum-stability": "dev",
   "extra": {
     "symfony": {
       "allow-contrib": false,
