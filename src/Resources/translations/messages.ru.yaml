@@ -1,8 +1,9 @@
 zentlix_user:
-  account:      "Учетная запись"
-  active:       "Активен"
-  address:      "Адрес"
-  admin_rights: "Административные права"
+  account:        "Учетная запись"
+  active:         "Активен"
+  address:        "Адрес"
+  admin_rights:   "Административные права"
+  administrators: "Администраторы"
 
   authorization:
     authorization:    "Авторизация"

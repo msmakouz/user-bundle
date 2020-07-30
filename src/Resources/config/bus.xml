@@ -103,6 +103,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository"/>
+            <argument type="service" id="Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository"/>
             <tag name="messenger.message_handler"/>
         </service>
         <service id="zentlix_user.user.update_handler" class="Zentlix\UserBundle\Application\Command\User\UpdateHandler">

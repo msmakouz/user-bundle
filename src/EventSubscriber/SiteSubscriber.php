@@ -55,18 +55,20 @@ class SiteSubscriber implements EventSubscriberInterface
         $command = $builder->getData();
 
         $userSite = null;
+        $email = null;
         if($command instanceof Site\UpdateCommand) {
             $userSite = $this->siteRepository->findOneBySiteId($command->getEntity()->getId());
+            $email = $userSite->getEmail();
         }
 
-        $command->createProperty('email', $userSite ? $userSite->getEmail()->getValue() : null);
+        $command->createProperty('email', $email ? $email->getValue() : null);
         $command->createProperty('smtp_host', $userSite ? $userSite->getSmtpHost() : null);
         $command->createProperty('smtp_port', $userSite ? $userSite->getSmtpPort() : null);
         $command->createProperty('smtp_user', $userSite ? $userSite->getSmtpUser() : null);
         $command->createProperty('smtp_password', $userSite ? $userSite->getSmtpPassword() : null);
 
         $user = $builder->create('user', Type\FormType::class, ['inherit_data' => true, 'label' => 'zentlix_user.user.users'])
-            ->add('email', Type\EmailType::class, ['label' => 'zentlix_user.email'])
+            ->add('email', Type\EmailType::class, ['label' => 'zentlix_user.email', 'required' => false])
             ->add('smtp_host', Type\TextType::class, ['label' => 'zentlix_user.smtp_host', 'required' => false])
             ->add('smtp_port', Type\IntegerType::class, ['label' => 'zentlix_user.smtp_port', 'required' => false])
             ->add('smtp_user', Type\TextType::class, ['label' => 'zentlix_user.user.user', 'required' => false])

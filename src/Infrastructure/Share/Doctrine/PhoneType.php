@@ -23,6 +23,11 @@ class PhoneType extends PhoneNumberType
 {
     const NAME = 'phone';
 
+    public function getName()
+    {
+        return self::NAME;
+    }
+
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if (null === $value || $value instanceof Phone) {
@@ -36,5 +41,10 @@ class PhoneType extends PhoneNumberType
         } catch (NumberParseException $e) {
             throw ConversionException::conversionFailed($value, self::NAME);
         }
+    }
+
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        return true;
     }
 }

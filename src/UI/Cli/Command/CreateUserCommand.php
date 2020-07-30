@@ -16,8 +16,7 @@ use Symfony\Component\Console\Command\Command as ConsoleCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use libphonenumber\PhoneNumberUtil;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandBus;
 use Zentlix\UserBundle\Application\Command\User\CreateCommand;
@@ -50,74 +49,53 @@ class CreateUserCommand extends ConsoleCommand {
     /** @throws \Exception */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $command = new CreateCommand();
-
-        $command->email = $input->getArgument('email');
-
-        $helper = $this->getHelper('question');
-
-        $question = new Question('Password:');
-        $command->plain_password = $helper->ask($input, $output, $question);
+        $io = new SymfonyStyle($input, $output);
 
         $groups = array_flip($this->groupRepository->assoc());
-        $question = new ChoiceQuestion('Please, select group:', $groups);
-        $question->setErrorMessage('Group %s is invalid.');
-        $command->groups = [$this->groupRepository->findOneByCode($helper->ask($input, $output, $question))];
 
-        $question = new Question('First name:');
-        $command->first_name = (string) $helper->ask($input, $output, $question);
+        $command = new CreateCommand();
 
-        $question = new Question('Last name:');
-        $command->last_name = (string) $helper->ask($input, $output, $question);
-
-        $question = new Question('Middle name:');
-        $command->middle_name = (string) $helper->ask($input, $output, $question);
-
-        $question = new Question('Middle name:');
-        $command->middle_name = (string) $helper->ask($input, $output, $question);
-
-        $question = new Question('Phone number:');
-        $command->phone = $this->phoneNumberUtil->parse((string) $helper->ask($input, $output, $question), PhoneNumberUtil::UNKNOWN_REGION);
-
-        $question = new ChoiceQuestion('Please, select user status:', [
+        $command->sendRegistrationEmail = false;
+        $command->email = $input->getArgument('email');
+        $command->plain_password = $io->ask('Password');
+        $command->groups = [$io->choice('Please, select group', $groups, 'admin-group')];
+        $command->first_name = (string) $io->ask('First name');
+        $command->last_name = (string) $io->ask('Last name');
+        $command->middle_name = (string) $io->ask('Middle name');
+        $phone = $io->ask('Phone number');
+        if($phone) {
+            $command->phone = $this->phoneNumberUtil->parse((string) $phone, PhoneNumberUtil::UNKNOWN_REGION);
+        }
+        $command->status = (string) $io->choice('Please, select user status', [
             User::STATUS_ACTIVE,
             User::STATUS_BLOCKED,
             User::STATUS_WAIT
         ], 0);
-        $question->setErrorMessage('Status %s is invalid.');
-        $command->status = (string) $helper->ask($input, $output, $question);
 
-        $question = new Question('Zip code:');
-        $command->zip = $helper->ask($input, $output, $question);
+        $command->zip = $io->ask('Zip code');
+        $command->country = $io->ask('Country');
+        $command->city = $io->ask('City');
+        $command->street = $io->ask('Street');
+        $command->house = $io->ask('House');
+        $command->flat = $io->ask('Flat');
 
-        $question = new Question('User country:');
-        $command->country = $helper->ask($input, $output, $question);
+        try {
+            $this->commandBus->handle($command);
+        } catch (\Exception $exception) {
+            $io->error($exception->getMessage()); exit;
+        }
 
-        $question = new Question('User city:');
-        $command->city = $helper->ask($input, $output, $question);
+        $io->success('User was created!');
 
-        $question = new Question('Street:');
-        $command->street = $helper->ask($input, $output, $question);
-
-        $question = new Question('House:');
-        $command->house = $helper->ask($input, $output, $question);
-
-        $question = new Question('Flat:');
-        $command->flat = $helper->ask($input, $output, $question);
-
-        $this->commandBus->handle($command);
-
-        $output->writeln('<info>User was created: </info>');
-        $output->writeln('');
-        $output->writeln("Email: $command->email");
-        $output->writeln("Password: $command->plain_password");
-        $output->writeln(sprintf("Group: %s", $this->groupRepository->findOneByCode(array_shift($command->groups))->getTitle()));
-        $output->writeln("Status: $command->status");
-        $output->writeln("Zip code: $command->zip");
-        $output->writeln("Country: $command->country");
-        $output->writeln("City: $command->city");
-        $output->writeln("Street: $command->street");
-        $output->writeln("House: $command->house");
-        $output->writeln("Flat: $command->flat");
+        $io->text("Email: $command->email");
+        $io->text("Password: $command->plain_password");
+        $io->text(sprintf("Group: %s", array_shift($command->groups)->getTitle()));
+        $io->text("Status: $command->status");
+        $io->text("Zip code: $command->zip");
+        $io->text("Country: $command->country");
+        $io->text("City: $command->city");
+        $io->text("Street: $command->street");
+        $io->text("House: $command->house");
+        $io->text("Flat: $command->flat");
     }
 }

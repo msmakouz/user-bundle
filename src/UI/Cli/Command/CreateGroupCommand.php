@@ -65,7 +65,7 @@ class CreateGroupCommand extends ConsoleCommand {
         $output->writeln('');
         $output->writeln("Title: $command->title");
         $output->writeln("Code: $command->code");
-        $output->writeln("Role: $command->code");
+        $output->writeln("Role: $command->group_role");
         $output->writeln("Sort: $command->sort");
     }
 }

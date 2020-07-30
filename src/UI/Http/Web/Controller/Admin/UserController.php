@@ -39,7 +39,10 @@ class UserController extends ResourceController
 
     public function create(Request $request): Response
     {
-        return $this->createResource(new CreateCommand(), CreateForm::class, $request);
+        $command = new CreateCommand();
+        $command->sendRegistrationEmail = false;
+
+        return $this->createResource($command, CreateForm::class, $request);
     }
 
     public function update(User $user, Request $request): Response

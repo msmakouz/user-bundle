@@ -1,8 +1,9 @@
 zentlix_user:
-  account:      "Обліковий запис"
-  active:       "Активний"
-  address:      "Адреса"
-  admin_rights: "Адміністративні права"
+  account:        "Обліковий запис"
+  active:         "Активний"
+  address:        "Адреса"
+  admin_rights:   "Адміністративні права"
+  administrators: "Адміністратори"
 
   authorization:
     authorization:    "Авторизація"

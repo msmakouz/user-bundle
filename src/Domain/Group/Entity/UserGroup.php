@@ -31,8 +31,8 @@ class UserGroup implements Eventable
 
     const GROUP_ROLE_USER = 'ROLE_USER';
     const GROUP_ROLE_ADMIN = 'ROLE_ADMIN';
-    const USER_GROUP = 'USER_GROUP';
-    const ADMIN_GROUP = 'ADMIN_GROUP';
+    const USER_GROUP = 'user-group';
+    const ADMIN_GROUP = 'admin-group';
 
     /**
      * @Mapping\Id()
@@ -104,7 +104,7 @@ class UserGroup implements Eventable
 
     public function isAccessGranted(string $command): bool
     {
-        if($this->code === 'ADMIN_GROUP') {
+        if($this->code === self::ADMIN_GROUP) {
             return true;
         }
 
@@ -123,7 +123,7 @@ class UserGroup implements Eventable
 
     public function isAdminGroup(): bool
     {
-        return $this->code === 'ADMIN_GROUP';
+        return $this->code === self::ADMIN_GROUP;
     }
 
     /**

@@ -17,6 +17,8 @@ use Zentlix\UserBundle\Domain\User\Entity\User;
 
 class CreateCommand extends Command implements CreateCommandInterface
 {
+    public bool $sendRegistrationEmail = true;
+
     public function __construct()
     {
         $this->status = User::STATUS_ACTIVE;

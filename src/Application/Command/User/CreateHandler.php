@@ -66,7 +66,9 @@ class CreateHandler implements CommandHandlerInterface
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        $this->mailer->send('user-registration', $user->getEmail()->getValue(), ['user' => $user]);
+        if($command->sendRegistrationEmail) {
+            $this->mailer->send('user-registration', $user->getEmail()->getValue(), ['user' => $user]);
+        }
 
         $this->eventDispatcher->dispatch(new AfterCreate($user, $command));
 

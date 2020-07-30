@@ -18,20 +18,24 @@ use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\User\Event\User\BeforeDelete;
 use Zentlix\UserBundle\Domain\User\Event\User\AfterDelete;
 use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
+use Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository;
 
 class DeleteHandler implements CommandHandlerInterface
 {
     private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
     private SettingRepository $settingRepository;
+    private DataTableRepository $dataTableRepository;
 
     public function __construct(EntityManagerInterface $entityManager,
                                 EventDispatcherInterface $eventDispatcher,
-                                SettingRepository $settingRepository)
+                                SettingRepository $settingRepository,
+                                DataTableRepository $dataTableRepository)
     {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->settingRepository = $settingRepository;
+        $this->dataTableRepository = $dataTableRepository;
     }
 
     public function __invoke(DeleteCommand $command): void
@@ -44,6 +48,11 @@ class DeleteHandler implements CommandHandlerInterface
 
         if(is_null($adminSetting) === false) {
             $this->entityManager->remove($adminSetting);
+        }
+
+        $dataTables = $this->dataTableRepository->findByUserId($userId);
+        foreach ($dataTables as $dataTable) {
+            $this->entityManager->remove($dataTable);
         }
 
         $this->entityManager->remove($command->user);

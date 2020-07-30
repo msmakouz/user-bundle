@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zentlix\MainBundle\UI\Http\Web\Type;
 use Zentlix\UserBundle\Application\Command\Group\UpdateCommand;
+use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 use Zentlix\UserBundle\Domain\Group\Event\UpdateForm as UpdateFormEvent;
 
 class UpdateForm extends Form
@@ -49,7 +50,7 @@ class UpdateForm extends Form
                 $rights->add(str_replace('\\', ':', $right), Type\CheckboxType::class, [
                     'label' => $rightsTitle,
                     'required' => false,
-                    'disabled' => $group->getCode() === 'ADMIN_GROUP' || !$this->user->isAdminGroup()
+                    'disabled' => $group->getCode() === UserGroup::ADMIN_GROUP || !$this->user->isAdminGroup()
                 ]);
             }
 

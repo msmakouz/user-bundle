@@ -14,12 +14,13 @@ namespace Zentlix\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Zentlix\MainBundle\Domain\Route\Entity\Route;
+use Zentlix\MainBundle\ZentlixBundleInterface;
 use Zentlix\MainBundle\ZentlixBundleTrait;
 use Zentlix\UserBundle\Application;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Event;
 use Zentlix\UserBundle\UI\Http\Web\Controller;
 
-class UserBundle extends Bundle
+class UserBundle extends Bundle implements ZentlixBundleInterface
 {
     use ZentlixBundleTrait;
 
@@ -61,11 +62,30 @@ class UserBundle extends Bundle
         ];
     }
 
-    public function installMailEvents(): array
+    public function installMailerEvents(): array
     {
-        return [
-            new Event('user.register_user', ['user.email' => 'zentlix_user.user.email'], 'user-registration'),
-            new Event('user.reset_password', ['link' => 'zentlix_user.reset_password_link'], 'reset-password')
+        $register = [
+            'user.email'       => 'zentlix_user.user.email',
+            'user.first_name'  => 'zentlix_user.first_name',
+            'user.last_name'   => 'zentlix_user.last_name',
+            'user.middle_name' => 'zentlix_user.middle_name',
+            'user.phone'       => 'zentlix_user.phone_number',
+            'user.zip'         => 'zentlix_user.zip',
+            'user.country'     => 'zentlix_user.country',
+            'user.city'        => 'zentlix_user.city',
+            'user.street'      => 'zentlix_user.street',
+            'user.house'       => 'zentlix_user.house',
+            'user.flat'        => 'zentlix_user.flat'
         ];
+
+        return [
+            new Event('zentlix_user.register_user', $register, 'user-registration'),
+            //new Event('zentlix_user.reset_password', ['link' => 'zentlix_user.reset_password_link'], 'reset-password')
+        ];
+    }
+
+    public function isSystem(): bool
+    {
+        return true;
     }
 }

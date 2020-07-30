@@ -13,7 +13,7 @@ security:
       security: false
 
     admin_secured_area:
-      pattern:   ^/%env(ADMIN_PATH)%
+      pattern:   ^/%admin_path%
       anonymous: true
       context: zentlix_auth
       guard:
@@ -23,8 +23,8 @@ security:
       provider: users
       form_login:
         login_path: admin.login
-        check_path: /%env(ADMIN_PATH)%/login
-        default_target_path: /%env(ADMIN_PATH)%
+        check_path: /%admin_path%/login
+        default_target_path: /%admin_path%
       logout:
         path: app_logout
 
@@ -45,6 +45,6 @@ security:
         path: app_logout
   access_control:
     - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/%env(ADMIN_PATH)%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-    - { path: ^/%env(ADMIN_PATH)%, roles: ROLE_ADMIN }
+    - { path: ^/%admin_path%/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+    - { path: ^/%admin_path%, roles: ROLE_ADMIN }
     - { path: ^/profile, roles: ROLE_USER }

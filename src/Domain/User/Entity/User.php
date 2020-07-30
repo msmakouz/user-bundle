@@ -141,8 +141,6 @@ class User implements UserInterface, Eventable
 
     public function __construct(CreateCommand $command)
     {
-        $this->groups = new ArrayCollection();
-
         $this->setValuesFromCommands($command);
     }
 
@@ -333,7 +331,9 @@ class User implements UserInterface, Eventable
 
     public function addGroup(UserGroup $group): User
     {
-        $this->groups->add($group);
+        if(!$this->groups->contains($group)) {
+            $this->groups->add($group);
+        }
 
         return $this;
     }
@@ -387,10 +387,8 @@ class User implements UserInterface, Eventable
 
     public function isAdminGroup(): bool
     {
-        $groups = $this->getGroups();
-
         /** @var UserGroup $group */
-        foreach ($groups as $group) {
+        foreach ($this->groups->getValues() as $group) {
             if($group->isAdminGroup()) {
                 return true;
             }
@@ -426,7 +424,7 @@ class User implements UserInterface, Eventable
         }
 
         /** @var UserGroup $group $group */
-        foreach ($this->getGroups() as $group) {
+        foreach ($this->groups->getValues() as $group) {
             if($group->isAccessGranted($command)) {
                 return true;
             }

@@ -35,14 +35,14 @@ class Site implements Eventable
 
     /**
      * @var Email
-     * @Mapping\Column(type="email", length=180)
+     * @Mapping\Column(type="email", length=180, nullable=true)
      */
     private $email;
 
     /** @Mapping\Column(type="string", length=64, nullable=true) */
     private $smtp_host;
 
-    /** @Mapping\Column(type="integer", options={"default": "0"}) */
+    /** @Mapping\Column(type="integer", nullable=true) */
     private $smtp_port;
 
     /** @Mapping\Column(type="string", length=255, nullable=true) */
@@ -75,7 +75,7 @@ class Site implements Eventable
         return $this->id;
     }
 
-    public function getEmail(): Email
+    public function getEmail(): ?Email
     {
         return $this->email;
     }

@@ -22,7 +22,7 @@ class Mailer implements MailerInterface
     private Providers $providers;
     private TemplateRepository $templateRepository;
     private EventRepository $eventRepository;
-    private int $siteId;
+    private Sites $sites;
 
     public function __construct(Providers $providers,
                                 TemplateRepository $templateRepository,
@@ -32,14 +32,14 @@ class Mailer implements MailerInterface
         $this->providers = $providers;
         $this->templateRepository = $templateRepository;
         $this->eventRepository = $eventRepository;
-        $this->siteId = $sites->getCurrentSiteId();
+        $this->sites = $sites;
     }
 
     public function send(string $event, string $defaultTo, array $data = []): void
     {
         $eventId = $this->eventRepository->getOneByCode($event)->getId();
 
-        $templates = $this->templateRepository->findActiveByEventSiteId($eventId, $this->siteId);
+        $templates = $this->templateRepository->findActiveByEventSiteId($eventId, $this->sites->getCurrentSiteId());
 
         foreach ($templates as $template) {
             $provider = $this->providers->getProvider($template->getProvider());

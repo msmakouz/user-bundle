@@ -67,5 +67,15 @@
             <argument type="service" id="session"/>
             <tag name="kernel.event_subscriber"/>
         </service>
+        <service id="Zentlix\UserBundle\EventSubscriber\InstallBundleSubscriber">
+            <argument type="service" id="doctrine.orm.entity_manager"/>
+            <argument type="service" id="translator"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
+
+        <service id="zentlix_user.user_bundle" class="Zentlix\UserBundle\UserBundle">
+            <tag name="zentlix_bundle"/>
+        </service>
     </services>
 </container>
