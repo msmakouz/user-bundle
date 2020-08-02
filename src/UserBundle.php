@@ -18,7 +18,6 @@ use Zentlix\MainBundle\ZentlixBundleInterface;
 use Zentlix\MainBundle\ZentlixBundleTrait;
 use Zentlix\UserBundle\Application;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Event;
-use Zentlix\UserBundle\UI\Http\Web\Controller;
 
 class UserBundle extends Bundle implements ZentlixBundleInterface
 {
@@ -61,9 +60,8 @@ class UserBundle extends Bundle implements ZentlixBundleInterface
     public function installFrontendRoutes(): array
     {
         return [
-            new Route('profile', Controller\UserController::class, 'profile', 'zentlix_user.profile', 'user.profile'),
-            new Route('register', Controller\UserController::class, 'register', 'zentlix_user.register', 'user.register'),
-            new Route('login', Controller\UserController::class, 'login', 'zentlix_user.login', 'user.login'),
+            new Route('profile', 'zentlix_user.user_controller', 'profile', 'zentlix_user.profile', 'user.profile'),
+            new Route('register', 'zentlix_user.user_controller', 'register', 'zentlix_user.register', 'user.register'),
         ];
     }
 

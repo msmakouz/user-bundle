@@ -47,6 +47,11 @@
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
             <tag name="form.type"/>
         </service>
+        <service id="zentlix_user.user.registration_form" class="Zentlix\UserBundle\UI\Http\Web\Form\User\RegistrationForm">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="translator"/>
+            <tag name="form.type"/>
+        </service>
 
         <service id="zentlix_user.widget.form" class="Zentlix\UserBundle\UI\Http\Web\Form\Widget\Form">
             <argument type="service" id="event_dispatcher"/>

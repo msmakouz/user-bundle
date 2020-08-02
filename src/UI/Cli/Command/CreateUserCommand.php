@@ -57,7 +57,13 @@ class CreateUserCommand extends ConsoleCommand {
 
         $command->sendRegistrationEmail = false;
         $command->email = $input->getArgument('email');
-        $command->plain_password = $io->ask('Password');
+        $command->plain_password = $io->ask('Password', null, function ($password) {
+            if (empty($password)) {
+                throw new \RuntimeException('Password cannot be empty.');
+            }
+
+            return $password;
+        });
         $command->groups = [$io->choice('Please, select group', $groups, 'admin-group')];
         $command->first_name = (string) $io->ask('First name');
         $command->last_name = (string) $io->ask('Last name');

@@ -16,5 +16,6 @@ class DefaultTemplate
 {
     const LOGIN        = '@UserBundle/users/login.html.twig';
     const REGISTER     = '@UserBundle/users/registration.html.twig';
+    const PROFILE      = '@UserBundle/users/profile.html.twig';
     const EMAIL_LAYOUT = '@UserBundle/mailer/layout.html.twig';
 }

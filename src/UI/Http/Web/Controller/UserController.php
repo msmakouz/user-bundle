@@ -39,6 +39,17 @@ class UserController extends AbstractController
         ]);
     }
 
+    public function profile(): Response
+    {
+        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') === false) {
+            return $this->redirectToRoute('index');
+        }
+
+        return $this->render($this->template->getConfigParam('user.profile', DefaultTemplate::PROFILE), [
+            'user' => $this->getUser()
+        ]);
+    }
+
     public function register(Request $request, GuardAuthenticatorHandler $guardHandler, Authenticator $authenticator): Response
     {
         $command = new CreateCommand();
