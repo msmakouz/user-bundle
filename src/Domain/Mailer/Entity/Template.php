@@ -21,7 +21,7 @@ use Zentlix\UserBundle\Application\Command\Mailer\Template\UpdateCommand;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository")
- * @Mapping\Table(name="zx_mailer_templates", uniqueConstraints={
+ * @Mapping\Table(name="zentlix_user_mailer_templates", uniqueConstraints={
  *     @Mapping\UniqueConstraint(columns={"code"})
  * })
  */
@@ -70,14 +70,12 @@ class Template implements Eventable
 
     /**
      * @Mapping\ManyToMany(targetEntity="Zentlix\MainBundle\Domain\Site\Entity\Site")
-     * @Mapping\JoinTable(name="zx_site_mailer_templates")
+     * @Mapping\JoinTable(name="zentlix_user_site_mailer_templates")
      */
     private $sites;
 
     public function __construct(CreateCommand $command)
     {
-        $this->sites = new ArrayCollection();
-
         $this->setValuesFromCommands($command);
     }
 
@@ -160,6 +158,6 @@ class Template implements Eventable
         $this->body = $command->body;
         $this->recipient = $command->recipient;
         $this->event = $command->event;
-        $this->sites = $command->sites;
+        $this->sites = new ArrayCollection($command->sites);
     }
 }

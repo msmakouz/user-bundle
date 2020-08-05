@@ -19,7 +19,7 @@ use Zentlix\UserBundle\Domain\User\Entity\User;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Admin\Repository\NotificationRepository")
- * @Mapping\Table(name="zx_admin_notifications")
+ * @Mapping\Table(name="zentlix_user_admin_notifications")
  */
 class Notification
 {

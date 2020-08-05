@@ -19,7 +19,7 @@ use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Journal\Repository\JournalRepository")
- * @Mapping\Table(name="zx_auth_journal")
+ * @Mapping\Table(name="zentlix_user_auth_journal")
  */
 class Journal
 {

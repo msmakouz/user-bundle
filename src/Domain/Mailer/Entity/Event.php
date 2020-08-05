@@ -19,7 +19,7 @@ use Zentlix\MainBundle\Domain\Bundle\Entity\Bundle;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository")
- * @Mapping\Table(name="zx_mailer_events", uniqueConstraints={
+ * @Mapping\Table(name="zentlix_user_mailer_events", uniqueConstraints={
  *     @Mapping\UniqueConstraint(columns={"code"})
  * })
  */

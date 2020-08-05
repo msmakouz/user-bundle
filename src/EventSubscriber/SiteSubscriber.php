@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Zentlix\MainBundle\Application\Command\DynamicPropertyCommand;
 use Zentlix\MainBundle\Application\Command\Site;
 use Zentlix\MainBundle\Domain\Site\Entity;
-use Zentlix\MainBundle\Domain\Site\Event;
+use Zentlix\MainBundle\Domain\Site\Event\Site as SiteEvent;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandBus;
 use Zentlix\MainBundle\UI\Http\Web\Type;
 use Zentlix\UserBundle\Application\Command\Site as SiteCommand;
@@ -36,16 +36,16 @@ class SiteSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            Event\CreateForm::class   => 'addSiteFields',
-            Event\UpdateForm::class   => 'addSiteFields',
-            Event\AfterCreate::class  => 'onAfterCreateSite',
-            Event\AfterUpdate::class  => 'onAfterUpdateSite',
-            Event\BeforeDelete::class => 'onBeforeDelete'
+            SiteEvent\CreateForm::class   => 'addSiteFields',
+            SiteEvent\UpdateForm::class   => 'addSiteFields',
+            SiteEvent\AfterCreate::class  => 'onAfterCreateSite',
+            SiteEvent\AfterUpdate::class  => 'onAfterUpdateSite',
+            SiteEvent\BeforeDelete::class => 'onBeforeDelete'
         ];
     }
 
     /**
-     * @param Event\CreateForm|Event\UpdateForm $event
+     * @param SiteEvent\CreateForm|SiteEvent\UpdateForm $event
      */
     public function addSiteFields($event)
     {
@@ -77,7 +77,7 @@ class SiteSubscriber implements EventSubscriberInterface
         $builder->add($user);
     }
 
-    public function onAfterCreateSite(Event\AfterCreate $afterCreate)
+    public function onAfterCreateSite(SiteEvent\AfterCreate $afterCreate)
     {
         /** @var Site\Command $siteCommand */
         $siteCommand = $afterCreate->getCommand();
@@ -91,7 +91,7 @@ class SiteSubscriber implements EventSubscriberInterface
         $this->commandBus->handle($command);
     }
 
-    public function onAfterUpdateSite(Event\AfterUpdate $afterUpdate)
+    public function onAfterUpdateSite(SiteEvent\AfterUpdate $afterUpdate)
     {
         /** @var Site\UpdateCommand $siteCommand */
         $siteCommand = $afterUpdate->getCommand();
@@ -102,7 +102,7 @@ class SiteSubscriber implements EventSubscriberInterface
         $this->commandBus->handle($command);
     }
 
-    public function onBeforeDelete(Event\BeforeDelete $beforeDelete)
+    public function onBeforeDelete(SiteEvent\BeforeDelete $beforeDelete)
     {
         $setting = $this->siteRepository->findOneBySiteId($beforeDelete->getCommand()->site->getId());
 

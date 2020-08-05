@@ -22,7 +22,7 @@ use Zentlix\UserBundle\Domain\User\ValueObject\Email;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\User\Repository\SiteRepository")
- * @Mapping\Table(name="zx_user_site")
+ * @Mapping\Table(name="zentlix_user_user_site")
  */
 class Site implements Eventable
 {

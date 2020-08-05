@@ -21,7 +21,7 @@ use Zentlix\UserBundle\Application\Command\Group\UpdateCommand;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository")
- * @Mapping\Table(name="zx_groups", uniqueConstraints={
+ * @Mapping\Table(name="zentlix_user_groups", uniqueConstraints={
  *     @Mapping\UniqueConstraint(columns={"code"})
  * })
  */

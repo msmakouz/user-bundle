@@ -18,7 +18,7 @@ use Zentlix\UserBundle\Domain\User\Entity\User;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository")
- * @Mapping\Table(name="zx_admin_settings")
+ * @Mapping\Table(name="zentlix_user_admin_settings")
  */
 class Setting
 {

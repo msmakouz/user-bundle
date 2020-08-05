@@ -24,7 +24,7 @@ use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\User\Repository\UserRepository")
- * @Mapping\Table(name="zx_users", uniqueConstraints={
+ * @Mapping\Table(name="zentlix_user_users", uniqueConstraints={
  *     @Mapping\UniqueConstraint(columns={"email"})
  * })
  */
@@ -88,7 +88,7 @@ class User implements UserInterface, Eventable
 
     /**
      * @Mapping\ManyToMany(targetEntity="Zentlix\UserBundle\Domain\Group\Entity\UserGroup")
-     * @Mapping\JoinTable(name="zx_user_groups",
+     * @Mapping\JoinTable(name="zentlix_user_user_groups",
      *     inverseJoinColumns={@Mapping\JoinColumn(name="group_id", referencedColumnName="id")}
      * )
      */
