@@ -25,7 +25,7 @@ class UserBundle extends Bundle implements ZentlixBundleInterface
 
     public function getVersion(): string
     {
-        return '0.1.0';
+        return '0.3.1';
     }
 
     public function getTitle(): string
