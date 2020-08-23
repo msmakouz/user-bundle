@@ -36,11 +36,15 @@ class Table extends AbstractDataTableType
                     'visible' => true,
                     'label'   => 'zentlix_main.title'
                 ])
-            ->add('provider_title', TextColumn::class, ['label' => 'main.type', 'visible' => true, 'translate' => true])
+            ->add('provider_title', TextColumn::class, [
+                'label'     => 'zentlix_user.mailer.provider',
+                'visible'   => true,
+                'translate' => true
+            ])
             ->add('event', TextColumn::class,
                 [
                     'data'      => fn(Template $template) => $template->getEvent()->getTitle(),
-                    'label'     => 'main.event',
+                    'label'     => 'zentlix_user.mailer.event',
                     'visible'   => true,
                     'translate' => true
                 ])

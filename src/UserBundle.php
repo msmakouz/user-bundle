@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Zentlix\MainBundle\Domain\Route\Entity\Route;
 use Zentlix\MainBundle\ZentlixBundleInterface;
 use Zentlix\MainBundle\ZentlixBundleTrait;
 use Zentlix\UserBundle\Application;
@@ -25,7 +24,7 @@ class UserBundle extends Bundle implements ZentlixBundleInterface
 
     public function getVersion(): string
     {
-        return '0.3.1';
+        return '0.3.2';
     }
 
     public function getTitle(): string
@@ -54,14 +53,6 @@ class UserBundle extends Bundle implements ZentlixBundleInterface
             Application\Command\Group\CreateCommand::class => 'zentlix_user.group.create.process',
             Application\Command\Group\UpdateCommand::class => 'zentlix_user.group.update.process',
             Application\Command\Group\DeleteCommand::class => 'zentlix_user.group.delete.process'
-        ];
-    }
-
-    public function installFrontendRoutes(): array
-    {
-        return [
-            new Route('profile', 'zentlix_user.user_controller', 'profile', 'zentlix_user.profile', 'user.profile'),
-            new Route('register', 'zentlix_user.user_controller', 'register', 'zentlix_user.register', 'user.register'),
         ];
     }
 

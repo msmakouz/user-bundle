@@ -62,9 +62,18 @@ class Form extends AbstractForm
                     'second_options'  => ['label' => $this->translator->trans('zentlix_user.password_confirm')],
                     'required'        => false
                 ])
-                ->add('first_name', Type\TextType::class, ['label' => 'zentlix_user.first_name'])
-                ->add('last_name', Type\TextType::class, ['label' => 'zentlix_user.last_name'])
-                ->add('middle_name', Type\TextType::class, ['label' => 'zentlix_user.middle_name', 'required' => false])
+                ->add('first_name', Type\TextType::class, [
+                    'label' => 'zentlix_user.first_name',
+                    'required' => false
+                ])
+                ->add('last_name', Type\TextType::class, [
+                    'label' => 'zentlix_user.last_name',
+                    'required' => false
+                ])
+                ->add('middle_name', Type\TextType::class, [
+                    'label' => 'zentlix_user.middle_name',
+                    'required' => false
+                ])
         );
         $builder->add(
             $builder->create('address', Type\FormType::class, ['inherit_data' => true, 'label' => 'zentlix_user.address'])
@@ -74,7 +83,8 @@ class Form extends AbstractForm
                 ])
                 ->add('zip', Type\TextType::class, [
                     'label'    => 'zentlix_user.zip',
-                    'required' => false])
+                    'required' => false
+                ])
                 ->add('country', Type\TextType::class, [
                     'label' => 'zentlix_user.country',
                     'required' => false

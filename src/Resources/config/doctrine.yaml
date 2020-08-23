@@ -2,27 +2,27 @@ doctrine:
   orm:
     auto_mapping: true
     mappings:
-      Admin:
+      zentlix_user_admin:
         is_bundle: false
         type: annotation
         dir: '%kernel.project_dir%/vendor/zentlix/user-bundle/src/Domain/Admin/Entity'
         prefix: Zentlix\UserBundle\Domain\Admin\Entity
-      Group:
+      zentlix_user_group:
         is_bundle: false
         type: annotation
         dir: '%kernel.project_dir%/vendor/zentlix/user-bundle/src/Domain/Group/Entity'
         prefix: Zentlix\UserBundle\Domain\Group\Entity
-      Journal:
+      zentlix_user_journal:
         is_bundle: false
         type: annotation
         dir: '%kernel.project_dir%/vendor/zentlix/user-bundle/src/Domain/Journal/Entity'
         prefix: Zentlix\UserBundle\Domain\Journal\Entity
-      Mailer:
+      zentlix_user_mailer:
         is_bundle: false
         type: annotation
         dir: '%kernel.project_dir%/vendor/zentlix/user-bundle/src/Domain/Mailer/Entity'
         prefix: Zentlix\UserBundle\Domain\Mailer\Entity
-      User:
+      zentlix_user_user:
         is_bundle: false
         type: annotation
         dir: '%kernel.project_dir%/vendor/zentlix/user-bundle/src/Domain/User/Entity'
