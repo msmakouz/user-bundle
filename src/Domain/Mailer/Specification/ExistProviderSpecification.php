@@ -13,10 +13,10 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Domain\Mailer\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\Mailer\Service\Providers;
+use function is_null;
 
-final class ExistProviderSpecification extends AbstractSpecification
+final class ExistProviderSpecification
 {
     private Providers $providers;
     private TranslatorInterface $translator;
@@ -27,24 +27,15 @@ final class ExistProviderSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isExist(string $code): bool
+    public function isExist(string $code): void
     {
-        return $this->isSatisfiedBy($code);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        $provider = $this->providers->findProvider($value);
-
-        if(is_null($provider)) {
-            throw new \DomainException(sprintf($this->translator->trans('zentlix_user.mailer.provider_not_found'), $value));
+        if(is_null($this->providers->findProvider($code))) {
+            throw new \DomainException(sprintf($this->translator->trans('zentlix_user.mailer.provider_not_found'), $code));
         }
-
-        return true;
     }
 
-    public function __invoke(string $code)
+    public function __invoke(string $code): void
     {
-        return $this->isExist($code);
+        $this->isExist($code);
     }
 }

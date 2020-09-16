@@ -13,9 +13,8 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Domain\Admin\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 
-final class ExistWidgetSpecification extends AbstractSpecification
+final class ExistWidgetSpecification
 {
     private TranslatorInterface $translator;
 
@@ -24,22 +23,15 @@ final class ExistWidgetSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isExist(string $class): bool
+    public function isExist(string $class): void
     {
-        return $this->isSatisfiedBy($class);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        if(class_exists($value) === false) {
-            throw new \Exception(sprintf($this->translator->trans('zentlix_user.validation.widget_not_exist'), $value));
+        if(class_exists($class) === false) {
+            throw new \Exception(sprintf($this->translator->trans('zentlix_user.validation.widget_not_exist'), $class));
         }
-
-        return true;
     }
 
-    public function __invoke(string $class): bool
+    public function __invoke(string $class): void
     {
-        return $this->isExist($class);
+        $this->isExist($class);
     }
 }

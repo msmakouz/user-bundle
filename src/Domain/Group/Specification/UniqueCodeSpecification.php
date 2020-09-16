@@ -14,10 +14,9 @@ namespace Zentlix\UserBundle\Domain\Group\Specification;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
 
-final class UniqueCodeSpecification extends AbstractSpecification
+final class UniqueCodeSpecification
 {
     private GroupRepository $groupRepository;
     private TranslatorInterface $translator;
@@ -28,17 +27,15 @@ final class UniqueCodeSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isUnique(string $code): bool
+    public function isUnique(string $code): void
     {
-        return $this->isSatisfiedBy($code);
+        if($this->groupRepository->hasByCode($code)) {
+            throw new NonUniqueResultException(sprintf($this->translator->trans('zentlix_user.validation.group_exist'), $code));
+        }
     }
 
-    public function isSatisfiedBy($value): bool
+    public function __invoke(string $code): void
     {
-        if($this->groupRepository->findOneByCode($value) !== null) {
-            throw new NonUniqueResultException(sprintf($this->translator->trans('zentlix_user.validation.group_exist'), $value));
-        }
-
-        return true;
+        $this->isUnique($code);
     }
 }

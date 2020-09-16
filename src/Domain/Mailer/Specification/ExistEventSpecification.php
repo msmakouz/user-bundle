@@ -13,10 +13,10 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Domain\Mailer\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository;
+use function is_null;
 
-final class ExistEventSpecification extends AbstractSpecification
+final class ExistEventSpecification
 {
     private EventRepository $eventRepository;
     private TranslatorInterface $translator;
@@ -27,24 +27,15 @@ final class ExistEventSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isExist(int $eventId): bool
+    public function isExist(int $eventId): void
     {
-        return $this->isSatisfiedBy($eventId);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        $event = $this->eventRepository->find($value);
-
-        if(is_null($event)) {
-            throw new \DomainException(sprintf($this->translator->trans('zentlix_user.mailer.event_not_found'), $value));
+        if(is_null($this->eventRepository->find($eventId))) {
+            throw new \DomainException(sprintf($this->translator->trans('zentlix_user.mailer.event_not_found'), $eventId));
         }
-
-        return true;
     }
 
-    public function __invoke(int $eventId)
+    public function __invoke(int $eventId): void
     {
-        return $this->isExist($eventId);
+        $this->isExist($eventId);
     }
 }

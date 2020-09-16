@@ -14,10 +14,9 @@ namespace Zentlix\UserBundle\Domain\Mailer\Specification;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository;
 
-final class UniqueCodeSpecification extends AbstractSpecification
+final class UniqueCodeSpecification
 {
     private TemplateRepository $templateRepository;
     private TranslatorInterface $translator;
@@ -28,22 +27,15 @@ final class UniqueCodeSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isUnique(string $code): bool
+    public function isUnique(string $code): void
     {
-        return $this->isSatisfiedBy($code);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        if(is_null($this->templateRepository->findOneByCode($value)) === false) {
-            throw new NonUniqueResultException(sprintf($this->translator->trans('zentlix_user.mailer.already_exist'), $value));
+        if($this->templateRepository->hasByCode($code)) {
+            throw new NonUniqueResultException(sprintf($this->translator->trans('zentlix_user.mailer.already_exist'), $code));
         }
-
-        return true;
     }
 
-    public function __invoke(string $code)
+    public function __invoke(string $code): void
     {
-        return $this->isUnique($code);
+        $this->isUnique($code);
     }
 }

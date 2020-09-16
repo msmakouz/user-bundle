@@ -14,11 +14,11 @@ namespace Zentlix\UserBundle\Domain\User\Specification;
 
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\User\Repository\UserRepository;
 use Zentlix\UserBundle\Domain\User\ValueObject\Email;
+use function is_null;
 
-final class UniqueEmailSpecification extends AbstractSpecification
+final class UniqueEmailSpecification
 {
     private UserRepository $userRepository;
     private TranslatorInterface $translator;
@@ -29,22 +29,15 @@ final class UniqueEmailSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isUnique(Email $email): bool
+    public function isUnique(Email $email): void
     {
-        return $this->isSatisfiedBy($email);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        if($this->userRepository->findOneBy(['email' => $value->getValue()]) !== null) {
-            throw new NonUniqueResultException(sprintf($this->translator->trans('zentlix_user.validation.user_email_unique'), $value->getValue()));
+        if(is_null($this->userRepository->findOneByEmail($email)) === false) {
+            throw new NonUniqueResultException(sprintf($this->translator->trans('zentlix_user.validation.user_email_unique'), $email->getValue()));
         }
-
-        return true;
     }
 
-    public function __invoke(Email $email): bool
+    public function __invoke(Email $email): void
     {
-        return $this->isUnique($email);
+        $this->isUnique($email);
     }
 }

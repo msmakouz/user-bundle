@@ -14,10 +14,10 @@ namespace Zentlix\UserBundle\Domain\User\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zentlix\MainBundle\Application\Query\NotFoundException;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\User\Repository\UserRepository;
+use function is_null;
 
-final class ExistUserSpecification extends AbstractSpecification
+final class ExistUserSpecification
 {
     private UserRepository $userRepository;
     private TranslatorInterface $translator;
@@ -28,22 +28,15 @@ final class ExistUserSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isExist(int $userId): bool
+    public function isExist(int $userId): void
     {
-        return $this->isSatisfiedBy($userId);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        if(is_null($this->userRepository->find($value))) {
-            throw new NotFoundException($this->translator->trans('zentlix_user.validation.user_not_exist'), $value);
+        if(is_null($this->userRepository->find($userId))) {
+            throw new NotFoundException($this->translator->trans('zentlix_user.validation.user_not_exist'), $userId);
         }
-
-        return true;
     }
 
-    public function __invoke(int $userId): bool
+    public function __invoke(int $userId): void
     {
-        return $this->isExist($userId);
+        $this->isExist($userId);
     }
 }

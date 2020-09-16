@@ -14,10 +14,9 @@ namespace Zentlix\UserBundle\Domain\Group\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zentlix\MainBundle\Application\Query\NotFoundException;
-use Zentlix\MainBundle\Domain\Shared\Specification\AbstractSpecification;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
 
-final class ExistGroupByCodeSpecification extends AbstractSpecification
+final class ExistGroupByCodeSpecification
 {
     private GroupRepository $groupRepository;
     private TranslatorInterface $translator;
@@ -28,22 +27,15 @@ final class ExistGroupByCodeSpecification extends AbstractSpecification
         $this->translator = $translator;
     }
 
-    public function isExist(string $code): bool
+    public function isExist(string $code): void
     {
-        return $this->isSatisfiedBy($code);
-    }
-
-    public function isSatisfiedBy($value): bool
-    {
-        if($this->groupRepository->hasByCode($value) === false) {
-            throw new NotFoundException(sprintf($this->translator->trans('zentlix_user.validation.group_not_exist'), $value));
+        if($this->groupRepository->hasByCode($code) === false) {
+            throw new NotFoundException(sprintf($this->translator->trans('zentlix_user.validation.group_not_exist'), $code));
         }
-
-        return true;
     }
 
-    public function __invoke(string $code): bool
+    public function __invoke(string $code): void
     {
-        return $this->isExist($code);
+        $this->isExist($code);
     }
 }
