@@ -13,9 +13,6 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\UI\Http\Web\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Zentlix\MainBundle\Domain\Bundle\Repository\BundleRepository;
 use Zentlix\MainBundle\UI\Http\Web\Controller\Admin\ResourceController;
 use Zentlix\UserBundle\Application\Command\Group\CreateCommand;
 use Zentlix\UserBundle\Application\Command\Group\UpdateCommand;
@@ -33,19 +30,21 @@ class GroupController extends ResourceController
     public static $deleteSuccessMessage = 'zentlix_user.group.delete.success';
     public static $redirectAfterAction  = 'admin.group.list';
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        return $this->listResource(new DataTableQuery(Table::class), $request);
+        return $this->listResource(new DataTableQuery(Table::class),'@UserBundle/admin/groups/groups.html.twig');
     }
 
-    public function create(Request $request): Response
+    public function create(): Response
     {
-        return $this->createResource(new CreateCommand(), CreateForm::class, $request);
+        return $this->createResource(new CreateCommand(), CreateForm::class, '@UserBundle/admin/groups/create.html.twig');
     }
 
-    public function update(UserGroup $group, Request $request, BundleRepository $bundleRepository, ContainerInterface $container): Response
+    public function update(UserGroup $group): Response
     {
-        return $this->updateResource(new UpdateCommand($group, $bundleRepository, $container), UpdateForm::class, $request);
+        return $this->updateResource(
+            new UpdateCommand($group), UpdateForm::class, '@UserBundle/admin/groups/update.html.twig', ['group' => $group]
+        );
     }
 
     public function delete(UserGroup $group): Response

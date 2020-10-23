@@ -13,15 +13,14 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\UI\Http\Web\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Zentlix\MainBundle\UI\Http\Web\Controller\Admin\ResourceController;
 use Zentlix\UserBundle\Application\Query\Journal\DataTableQuery;
 use Zentlix\UserBundle\UI\Http\Web\DataTable\Journal\Table;
 
 class JournalController extends ResourceController
 {
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        return $this->listResource(new DataTableQuery(Table::class), $request);
+        return $this->listResource(new DataTableQuery(Table::class),'@UserBundle/admin/journal/journal.html.twig');
     }
 }

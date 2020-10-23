@@ -14,7 +14,7 @@ namespace Zentlix\UserBundle\Application\Command\Site;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\User\Entity\Site;
 use Zentlix\UserBundle\Domain\User\Event\Site\AfterCreate;
 use Zentlix\UserBundle\Domain\User\Event\Site\BeforeCreate;

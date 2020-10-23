@@ -1,0 +1,27 @@
+<li class="c-header-nav-item dropdown d-md-down-none mx-2 notification-item">
+    <a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <svg class="c-icon">
+            <use xlink:href="{{ admin_asset('vendors/@coreui/icons/svg/free.svg#cil-bell') }}"></use>
+        </svg>
+        <span class="badge badge-pill badge-danger">{{ notifications | length }}</span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg pt-0 pb-0">
+        <div class="dropdown-header bg-light">
+            <strong>
+                {% if notifications | length == 0 %}
+                    {{ 'zentlix_user.no_notifications' | trans }}
+                {% else %}
+                    {{ 'zentlix_user.notifications' | trans }}
+                {% endif %}
+            </strong>
+        </div>
+        {% for notification in notifications %}
+            <a class="dropdown-item pb-0" href="{{ notification.href }}">
+                <svg class="c-icon mfe-2 text-success">
+                    <use xlink:href="{{ admin_asset('vendors/@coreui/icons/svg/free.svg#' ~ notification.icon ) }}"></use>
+                </svg>
+                {{ notification.href }}
+            </a>
+        {% endfor %}
+    </div>
+</li>

@@ -14,7 +14,7 @@ namespace Zentlix\UserBundle\Domain\User\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Zentlix\MainBundle\Application\Query\NotFoundException;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\NotFoundException;
 use Zentlix\UserBundle\Domain\User\Entity\Site;
 
 /**

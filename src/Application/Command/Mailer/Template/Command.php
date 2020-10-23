@@ -13,40 +13,30 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Application\Command\Mailer\Template;
 
 use Symfony\Component\Validator\Constraints;
-use Zentlix\MainBundle\Application\Command\DynamicPropertyCommand;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandInterface;
-use Zentlix\UserBundle\Domain\Mailer\Entity\Event;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
 
-class Command extends DynamicPropertyCommand implements CommandInterface
+class Command implements CommandInterface
 {
     /** @Constraints\NotBlank() */
     public ?string $title;
-    public ?bool $active;
-    public ?string $code;
+    public ?bool $active = true;
+    public ?string $code = null;
     protected Template $entity;
 
-    /**
-     * @var int|Event
-     * @Constraints\NotBlank()
-     */
-    public $event;
+    /** @Constraints\NotBlank() */
+    public string $event;
 
-    /**
-     * @var string
-     * @Constraints\NotBlank()
-     */
-    public $provider;
-    public $provider_title;
+    /** @Constraints\NotBlank() */
+    public string $provider;
 
     /** @Constraints\NotBlank() */
     public ?string $theme;
 
-    /** @Constraints\NotBlank() */
-    public ?string $body;
+    public ?string $body = null;
 
     /** @Constraints\NotBlank() */
-    public ?string $recipient;
+    public ?string $recipient = '%default_to%';
 
     /** @Constraints\NotBlank() */
     public ?array $sites = [];

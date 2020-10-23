@@ -29,7 +29,7 @@ final class ExistProviderSpecification
 
     public function isExist(string $code): void
     {
-        if(is_null($this->providers->findProvider($code))) {
+        if(is_null($this->providers->find($code))) {
             throw new \DomainException(sprintf($this->translator->trans('zentlix_user.mailer.provider_not_found'), $code));
         }
     }

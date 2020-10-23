@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Domain\Mailer\Service;
 
-use Zentlix\UserBundle\Infrastructure\Share\Mailer\Provider\ProviderInterface;
+use Zentlix\UserBundle\Infrastructure\Mailer\Provider\ProviderInterface;
 
 class Providers
 {
@@ -34,7 +34,7 @@ class Providers
         $this->providers[$provider->getCode()] = $provider;
     }
 
-    public function findProvider(string $code): ?ProviderInterface
+    public function find(string $code): ?ProviderInterface
     {
         if(isset($this->providers[$code])) {
             return $this->providers[$code];
@@ -43,7 +43,7 @@ class Providers
         return null;
     }
 
-    public function getProvider(string $code): ProviderInterface
+    public function get(string $code): ProviderInterface
     {
         if(isset($this->providers[$code]) === false) {
             throw new \DomainException(sprintf('Provider with code %s not found.', $code));
@@ -55,7 +55,6 @@ class Providers
     public function assoc(): array
     {
         $providers = [];
-
         foreach ($this->providers as $provider) {
             $providers[$provider->getTitle()] = $provider->getCode();
         }

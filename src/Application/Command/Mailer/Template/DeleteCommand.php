@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Application\Command\Mailer\Template;
 
 use Symfony\Component\Validator\Constraints;
-use Zentlix\MainBundle\Application\Command\DeleteCommandInterface;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\DeleteCommandInterface;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
 
 class DeleteCommand implements DeleteCommandInterface, CommandInterface

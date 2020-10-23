@@ -4,42 +4,26 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
         <service id="Zentlix\UserBundle\UI\Http\Web\DataTable\Group\Table">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.helper"/>
-            <argument type="service" id="router"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="service_container"/>
-            <argument type="service" id="Symfony\Component\Security\Csrf\CsrfTokenManagerInterface"/>
             <argument type="service" id="event_dispatcher"/>
             <tag name="datatables.type"/>
         </service>
         <service id="Zentlix\UserBundle\UI\Http\Web\DataTable\Journal\Table">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.helper"/>
-            <argument type="service" id="router"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="service_container"/>
-            <argument type="service" id="Symfony\Component\Security\Csrf\CsrfTokenManagerInterface"/>
             <argument type="service" id="event_dispatcher"/>
             <tag name="datatables.type"/>
         </service>
         <service id="Zentlix\UserBundle\UI\Http\Web\DataTable\Mailer\Table">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.helper"/>
-            <argument type="service" id="router"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="service_container"/>
-            <argument type="service" id="Symfony\Component\Security\Csrf\CsrfTokenManagerInterface"/>
             <argument type="service" id="event_dispatcher"/>
             <tag name="datatables.type"/>
         </service>
         <service id="Zentlix\UserBundle\UI\Http\Web\DataTable\User\Table">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="security.helper"/>
-            <argument type="service" id="router"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="service_container"/>
-            <argument type="service" id="Symfony\Component\Security\Csrf\CsrfTokenManagerInterface"/>
             <argument type="service" id="event_dispatcher"/>
             <tag name="datatables.type"/>
         </service>

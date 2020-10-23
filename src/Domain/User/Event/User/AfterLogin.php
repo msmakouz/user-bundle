@@ -16,8 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class AfterLogin {
 
-    /** @var UserInterface $user */
-    private $user;
+    private UserInterface $user;
 
     public function __construct(UserInterface $user)
     {

@@ -28,12 +28,6 @@ class UpdateForm extends Form
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class'     => UpdateCommand::class,
-            'label'          => 'zentlix_user.user.update.process',
-            'form'           => self::FLEX_2_FORM,
-            'deleteBtnLabel' => 'zentlix_user.user.delete.action',
-            'deleteConfirm'  => 'zentlix_user.user.delete.confirmation'
-        ]);
+        $resolver->setDefaults(['data_class' => UpdateCommand::class]);
     }
 }

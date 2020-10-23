@@ -16,11 +16,8 @@ use Zentlix\UserBundle\Domain\User\ValueObject\Email;
 
 final class BeforeLogin
 {
-    /**
-     * @var Email
-     */
-    private $email;
-    private $password;
+    private Email $email;
+    private string $password;
 
     public function __construct(Email $email, string $password)
     {

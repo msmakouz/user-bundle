@@ -68,7 +68,7 @@ class UserGroup implements Eventable
         $this->setValuesFromCommands($command);
 
         if($this->isRoleAdmin()) {
-            $this->rights = $command->getRights();
+            $this->rights = $command->rights;
         }
     }
 
@@ -108,7 +108,7 @@ class UserGroup implements Eventable
             return true;
         }
 
-        return isset($this->rights[$command]) && $this->rights[$command] == 1;
+        return $this->rights[$command] ?? false;
     }
 
     public function isRoleAdmin(): bool

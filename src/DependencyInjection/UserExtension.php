@@ -31,9 +31,11 @@ class UserExtension extends Extension implements PrependExtensionInterface
         $loader->load('dashboard_widgets.xml');
         $loader->load('datatables.xml');
         $loader->load('form_types.xml');
+        $loader->load('listeners.xml');
         $loader->load('repositories.xml');
         $loader->load('services.xml');
         $loader->load('specifications.xml');
+        $loader->load('subscribers.xml');
         $loader->load('twig_extensions.xml');
     }
 

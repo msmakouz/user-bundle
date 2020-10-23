@@ -15,11 +15,11 @@ namespace Zentlix\UserBundle\UI\Http\Web\Widget;
 use Symfony\Component\Security\Core\Security;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
+use function is_null;
 
 class User extends AbstractExtension
 {
-    /** @var Security */
-    private $security;
+    private Security $security;
 
     public function __construct(Security $security)
     {
@@ -29,7 +29,7 @@ class User extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('isAdmin', [$this, 'isAdmin'], ['needs_environment' => false]),
+            new TwigFunction('is_admin', [$this, 'isAdmin'], ['needs_environment' => false]),
         ];
     }
 
@@ -38,7 +38,7 @@ class User extends AbstractExtension
         /** @var \Zentlix\UserBundle\Domain\User\Entity\User $user */
         $user = $this->security->getUser();
 
-        if($user === null) {
+        if(is_null($user)) {
             return false;
         }
        

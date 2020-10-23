@@ -7,5 +7,15 @@
             <argument type="service" id="security.helper"/>
             <tag name="twig.extension"/>
         </service>
+        <service id="zentlix_user.twig_extension.notification" class="Zentlix\UserBundle\UI\Http\Web\Widget\Admin\Notification">
+            <argument type="service" id="security.helper"/>
+            <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\NotificationRepository"/>
+            <tag name="twig.extension"/>
+        </service>
+        <service id="zentlix_user.twig_extension.locale" class="Zentlix\UserBundle\UI\Http\Web\Widget\Admin\Locale">
+            <argument type="service" id="zentlix_user.admin_settings"/>
+            <argument type="service" id="Zentlix\MainBundle\Domain\Locale\Repository\LocaleRepository"/>
+            <tag name="twig.extension"/>
+        </service>
     </services>
 </container>

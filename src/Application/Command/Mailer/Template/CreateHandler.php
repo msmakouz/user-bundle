@@ -14,17 +14,15 @@ namespace Zentlix\UserBundle\Application\Command\Mailer\Template;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
 use Zentlix\MainBundle\Domain\Site\Repository\SiteRepository;
 use Zentlix\MainBundle\Domain\Site\Specification\ExistSiteSpecification;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Mailer\Event\Template\AfterCreate;
 use Zentlix\UserBundle\Domain\Mailer\Event\Template\BeforeCreate;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
-use Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository;
 use Zentlix\UserBundle\Domain\Mailer\Specification\ExistEventSpecification;
 use Zentlix\UserBundle\Domain\Mailer\Specification\ExistProviderSpecification;
 use Zentlix\UserBundle\Domain\Mailer\Specification\UniqueCodeSpecification;
-use Zentlix\UserBundle\Domain\Mailer\Service\Providers;
 
 class CreateHandler implements CommandHandlerInterface
 {
@@ -34,9 +32,7 @@ class CreateHandler implements CommandHandlerInterface
     private UniqueCodeSpecification $uniqueCodeSpecification;
     private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
-    private EventRepository $eventRepository;
     private SiteRepository $siteRepository;
-    private Providers $providers;
 
     public function __construct(EntityManagerInterface $entityManager,
                                 EventDispatcherInterface $eventDispatcher,
@@ -44,9 +40,7 @@ class CreateHandler implements CommandHandlerInterface
                                 ExistProviderSpecification $existProviderSpecification,
                                 ExistSiteSpecification $existSiteSpecification,
                                 UniqueCodeSpecification $uniqueCodeSpecification,
-                                EventRepository $eventRepository,
-                                SiteRepository $siteRepository,
-                                Providers $providers)
+                                SiteRepository $siteRepository)
     {
         $this->existEventSpecification = $existEventSpecification;
         $this->existProviderSpecification = $existProviderSpecification;
@@ -54,9 +48,7 @@ class CreateHandler implements CommandHandlerInterface
         $this->uniqueCodeSpecification = $uniqueCodeSpecification;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
-        $this->eventRepository = $eventRepository;
         $this->siteRepository = $siteRepository;
-        $this->providers = $providers;
     }
 
     public function __invoke(CreateCommand $command): void
@@ -70,9 +62,7 @@ class CreateHandler implements CommandHandlerInterface
             $this->uniqueCodeSpecification->isUnique($command->code);
         }
 
-        $command->event = $this->eventRepository->get($command->event);
         $command->sites = $this->siteRepository->findBy(['id' => $command->sites]);
-        $command->provider_title = $this->providers->getProvider($command->provider)->getTitle();
 
         $this->eventDispatcher->dispatch(new BeforeCreate($command));
 

@@ -1,3 +1,4 @@
 twig:
+  form_themes: ['bootstrap_4_layout.html.twig']
   paths:
     '%kernel.project_dir%/vendor/zentlix/user-bundle/src/UI/Http/Web/templates': UserBundle

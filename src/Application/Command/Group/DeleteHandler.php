@@ -14,7 +14,7 @@ namespace Zentlix\UserBundle\Application\Command\Group;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Group\Event\BeforeDelete;
 use Zentlix\UserBundle\Domain\Group\Event\AfterDelete;
 
@@ -34,8 +34,10 @@ class DeleteHandler implements CommandHandlerInterface
         $groupId = $command->group->getId();
 
         $this->eventDispatcher->dispatch(new BeforeDelete($command));
+
         $this->entityManager->remove($command->group);
         $this->entityManager->flush();
+
         $this->eventDispatcher->dispatch(new AfterDelete($groupId));
     }
 }

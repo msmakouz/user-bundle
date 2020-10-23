@@ -10,15 +10,13 @@
 
 declare(strict_types=1);
 
-namespace Zentlix\UserBundle\Infrastructure\Share\Mailer\Provider;
+namespace Zentlix\UserBundle\Infrastructure\Mailer\Provider;
 
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
 
 interface ProviderInterface
 {
     public function getCode(): string;
-
     public function getTitle(): string;
-
     public function send(Template $template, string $defaultTo, array $data = []): void;
 }

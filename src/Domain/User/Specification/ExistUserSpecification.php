@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Domain\User\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Application\Query\NotFoundException;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\NotFoundException;
 use Zentlix\UserBundle\Domain\User\Repository\UserRepository;
 use function is_null;
 

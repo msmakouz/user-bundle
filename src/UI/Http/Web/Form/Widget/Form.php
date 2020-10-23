@@ -15,7 +15,7 @@ namespace Zentlix\UserBundle\UI\Http\Web\Form\Widget;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Zentlix\MainBundle\Domain\Dashboard\Service\Widgets;
 use Zentlix\MainBundle\UI\Http\Web\FormType\AbstractForm;
 use Zentlix\MainBundle\UI\Http\Web\Type;
 use Zentlix\UserBundle\Application\Command\AdminSetting\Widgets\ChangeWidgetsCommand;
@@ -23,40 +23,29 @@ use Zentlix\UserBundle\Domain\Admin\Event\Setting\WidgetsForm;
 
 class Form extends AbstractForm
 {
-    protected EventDispatcherInterface $eventDispatcher;
-    protected TranslatorInterface $translator;
+    private EventDispatcherInterface $eventDispatcher;
+    private Widgets $widgets;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator)
+    public function __construct(EventDispatcherInterface $eventDispatcher, Widgets $widgets)
     {
         $this->eventDispatcher = $eventDispatcher;
-        $this->translator = $translator;
+        $this->widgets = $widgets;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var ChangeWidgetsCommand $command */
-        $command = $builder->getData();
-        $main = $builder->create('main', Type\FormType::class, ['inherit_data' => true, 'label' => 'zentlix_main.main']);
-
-        foreach ($command->availableWidgets as $widget) {
-            $reflection = new \ReflectionClass($widget);
-            $main->add(str_replace('\\', ':', $reflection->getName()), Type\CheckboxType::class, [
-                'label' => ChangeWidgetsCommand::$widgetsTitles[$reflection->getName()],
+        foreach ($this->widgets->getWidgets() as $class => $widget) {
+            $builder->add(str_replace('\\', ':', $class), Type\CheckboxType::class, [
+                'label'    => $widget->getTitle(),
                 'required' => false
             ]);
         }
-
-        $builder->add($main);
 
         $this->eventDispatcher->dispatch(new WidgetsForm($builder));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'label'      => 'zentlix_user.widgets.update',
-            'data_class' => ChangeWidgetsCommand::class,
-            'form'       => self::SIMPLE_FORM
-        ]);
+        $resolver->setDefaults(['data_class' => ChangeWidgetsCommand::class]);
     }
 }

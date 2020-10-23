@@ -12,29 +12,33 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\AdminSetting\Widgets;
 
-use Symfony\Component\Validator\Constraints;
-use Zentlix\MainBundle\Application\Command\DynamicPropertyCommand;
-use Zentlix\MainBundle\Domain\Dashboard\WidgetInterface;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandInterface;
 
-class ChangeWidgetsCommand extends DynamicPropertyCommand implements CommandInterface
+class ChangeWidgetsCommand implements CommandInterface
 {
-    /** @Constraints\NotBlank() */
-    public array $availableWidgets;
-    public array $widgets;
-
-    public static array $widgetsTitles;
-
-    public function __construct(array $widgets, array $availableWidgets)
+    public function __construct(array $widgets)
     {
-        $this->availableWidgets = $availableWidgets;
-
-        /** @var WidgetInterface $widget */
-        foreach ($availableWidgets as $widget) {
-            $reflection = new \ReflectionClass($widget);
-            self::$widgetsTitles[$reflection->getName()] = $widget->getTitle();
-            $this->createProperty(str_replace('\\', ':', $reflection->getName()),
-                isset($widgets[$reflection->getName()]) ? $widgets[$reflection->getName()] : false);
+        foreach ($widgets as $class => $isVisible) {
+            $this->__set($class, $isVisible);
         }
+    }
+
+    public function __get($widget): bool
+    {
+        if($this->__isset($widget)) {
+            return $this->{str_replace(':', '\\', $widget)};
+        }
+
+        return false;
+    }
+
+    public function __set($widget, $isVisible): void
+    {
+        $this->{str_replace(':', '\\', $widget)} = $isVisible;
+    }
+
+    public function __isset($widget): bool
+    {
+        return isset($this->{str_replace(':', '\\', $widget)});
     }
 }

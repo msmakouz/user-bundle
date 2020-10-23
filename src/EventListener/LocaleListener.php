@@ -15,16 +15,13 @@ namespace Zentlix\UserBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class LocaleListener implements EventSubscriberInterface
 {
     private string $defaultLocale;
-    private SessionInterface $session;
 
-    public function __construct(SessionInterface $session, $defaultLocale = 'en')
+    public function __construct($defaultLocale = 'en')
     {
-        $this->session = $session;
         $this->defaultLocale = $defaultLocale;
     }
 
@@ -47,7 +44,7 @@ class LocaleListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::REQUEST => [['onKernelRequest', 99]]
+            KernelEvents::REQUEST => ['onKernelRequest']
         ];
     }
 }

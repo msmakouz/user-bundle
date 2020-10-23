@@ -13,9 +13,10 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\UI\Http\Web\DataTable\User;
 
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
+use Omines\DataTablesBundle\Column\TwigColumn;
 use Omines\DataTablesBundle\DataTable;
-use Zentlix\MainBundle\Domain\DataTable\Column\DateTimeColumn;
-use Zentlix\MainBundle\Domain\DataTable\Column\TextColumn;
+use Omines\DataTablesBundle\Column\DateTimeColumn;
+use Omines\DataTablesBundle\Column\TextColumn;
 use Zentlix\MainBundle\Infrastructure\Share\DataTable\AbstractDataTableType;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 use Zentlix\UserBundle\Domain\User\Entity\User;
@@ -25,18 +26,15 @@ class Table extends AbstractDataTableType
 {
     public function configure(DataTable $dataTable, array $options)
     {
-        $dataTable->setName($this->router->generate('admin.user.list'));
-        $dataTable->setTitle('zentlix_user.user.users');
-        $dataTable->setCreateBtnLabel('zentlix_user.user.create.action');
+        $dataTable->setName('users-datatable');
 
         $dataTable
             ->add('id', TextColumn::class, ['label' => 'zentlix_main.id', 'visible' => true])
-            ->add('email', TextColumn::class,
+            ->add('email', TwigColumn::class,
                 [
-                    'render'  => fn($value, User $context) =>
-                        sprintf('<a href="%s">%s</a>', $this->router->generate('admin.user.update', ['id' => $context->getId()]), $value),
-                    'visible' => true,
-                    'label'   => 'zentlix_user.email'
+                    'template' => '@UserBundle/admin/users/datatable/title.html.twig',
+                    'visible'  => true,
+                    'label'    => 'zentlix_user.email'
                 ])
             ->add('last_name', TextColumn::class, ['label' => 'zentlix_user.last_name', 'visible' => true])
             ->add('first_name', TextColumn::class, ['label' => 'zentlix_user.first_name', 'visible' => true])
@@ -68,10 +66,8 @@ class Table extends AbstractDataTableType
                         switch ($user->getStatus()) {
                             case User::STATUS_ACTIVE:
                                 return $this->translator->trans('zentlix_user.active');
-                                break;
                             case User::STATUS_BLOCKED:
                                 return $this->translator->trans('zentlix_user.blocked');
-                                break;
                             default:
                                 return $this->translator->trans('zentlix_user.wait_activation');
                         }

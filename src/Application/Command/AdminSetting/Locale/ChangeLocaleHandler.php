@@ -15,32 +15,24 @@ namespace Zentlix\UserBundle\Application\Command\AdminSetting\Locale;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
-use Zentlix\MainBundle\Domain\Locale\Specification\ExistLocaleSpecification;
-use Zentlix\UserBundle\Domain\Admin\Service\AdminSettings;
-use Zentlix\MainBundle\Domain\Locale\Repository\LocaleRepository;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Admin\Event\Setting\BeforeChangeLocale;
 use Zentlix\UserBundle\Domain\Admin\Event\Setting\AfterChangeLocale;
+use Zentlix\UserBundle\Domain\Admin\Service\AdminSettings;
 
 class ChangeLocaleHandler implements CommandHandlerInterface
 {
-    private ExistLocaleSpecification $existLocaleSpecification;
     private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
     private AdminSettings $adminSettings;
-    private LocaleRepository $localeRepository;
     private SessionInterface $session;
 
-    public function __construct(ExistLocaleSpecification $existLocaleSpecification,
-                                AdminSettings $adminSettings,
-                                LocaleRepository $localeRepository,
+    public function __construct(AdminSettings $adminSettings,
                                 EntityManagerInterface $entityManager,
                                 EventDispatcherInterface $eventDispatcher,
                                 SessionInterface $session)
     {
-        $this->existLocaleSpecification = $existLocaleSpecification;
         $this->adminSettings = $adminSettings;
-        $this->localeRepository = $localeRepository;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->session = $session;
@@ -48,15 +40,12 @@ class ChangeLocaleHandler implements CommandHandlerInterface
 
     public function __invoke(ChangeLocaleCommand $command): void
     {
-        $this->existLocaleSpecification->isExist($command->locale_id);
-
         $this->eventDispatcher->dispatch(new BeforeChangeLocale($command));
 
-        $locale = $this->localeRepository->get($command->locale_id);
         $settings = $this->adminSettings->getSettings();
-        $settings->setLocale($locale);
+        $settings->setLocale($command->locale);
 
-        $this->session->set('_locale', $locale->getCode());
+        $this->session->set('_locale', $command->locale->getCode());
 
         $this->entityManager->flush();
 

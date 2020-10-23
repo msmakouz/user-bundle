@@ -55,18 +55,11 @@ class Template implements Eventable
     /** @Mapping\Column(type="string", length=255, nullable=true) */
     private $recipient;
 
-    /**
-     * @var Event
-     * @Mapping\ManyToOne(targetEntity="Event")
-     * @Mapping\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
-     */
+    /** @Mapping\Column(type="string", length=255) */
     private $event;
 
     /** @Mapping\Column(type="string", length=64) */
     private $provider;
-
-    /** @Mapping\Column(type="string", length=64) */
-    private $provider_title;
 
     /**
      * @Mapping\ManyToMany(targetEntity="Zentlix\MainBundle\Domain\Site\Entity\Site")
@@ -119,12 +112,7 @@ class Template implements Eventable
         return $this->provider;
     }
 
-    public function getProviderTitle(): ?string
-    {
-        return $this->provider_title;
-    }
-
-    public function getEvent(): Event
+    public function getEvent(): string
     {
         return $this->event;
     }
@@ -149,15 +137,14 @@ class Template implements Eventable
      */
     private function setValuesFromCommands($command): void
     {
-        $this->title = $command->title;
-        $this->active = $command->active;
-        $this->provider = $command->provider;
-        $this->provider_title = $command->provider_title;
-        $this->code = $command->code;
-        $this->theme = $command->theme;
-        $this->body = $command->body;
+        $this->title     = $command->title;
+        $this->active    = $command->active;
+        $this->provider  = $command->provider;
+        $this->code      = $command->code;
+        $this->theme     = $command->theme;
+        $this->body      = $command->body;
         $this->recipient = $command->recipient;
-        $this->event = $command->event;
-        $this->sites = new ArrayCollection($command->sites);
+        $this->event     = $command->event;
+        $this->sites     = new ArrayCollection($command->sites);
     }
 }

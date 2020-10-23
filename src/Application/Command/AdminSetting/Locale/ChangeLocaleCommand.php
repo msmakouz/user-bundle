@@ -13,15 +13,16 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Application\Command\AdminSetting\Locale;
 
 use Symfony\Component\Validator\Constraints;
+use Zentlix\MainBundle\Domain\Locale\Entity\Locale;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandInterface;
 
 class ChangeLocaleCommand implements CommandInterface
 {
     /** @Constraints\NotBlank() */
-    public int $locale_id;
+    public Locale $locale;
 
-    public function __construct(int $locale_id)
+    public function __construct(Locale $locale)
     {
-        $this->locale_id = $locale_id;
+        $this->locale = $locale;
     }
 }

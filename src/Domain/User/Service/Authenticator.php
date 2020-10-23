@@ -40,13 +40,13 @@ class Authenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    private $entityManager;
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $passwordEncoder;
-    private $container;
-    private $translator;
-    private $eventDispatcher;
+    private EntityManagerInterface $entityManager;
+    private UrlGeneratorInterface $urlGenerator;
+    private CsrfTokenManagerInterface $csrfTokenManager;
+    private UserPasswordEncoderInterface $passwordEncoder;
+    private ContainerInterface $container;
+    private TranslatorInterface $translator;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(EntityManagerInterface $entityManager,
                                 UrlGeneratorInterface $urlGenerator,

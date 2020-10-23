@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace Zentlix\UserBundle\Infrastructure\Share\Mailer\Transport;
+namespace Zentlix\UserBundle\Infrastructure\Mailer\Transport;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Transport\Dsn;

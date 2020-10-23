@@ -5,10 +5,9 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <defaults public="false"/>
+        <defaults public="true"/>
         <service id="zentlix_user.user_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\UserController"
-                 public="true">
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\UserController">
             <argument type="service" id="zentlix_main.sites"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="zentlix_main.command_bus"/>
@@ -16,8 +15,7 @@
             <tag name="controller.service_arguments"/>
         </service>
         <service id="zentlix_user.admin.admin_settings_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\AdminSettingsController"
-                 public="true">
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\AdminSettingsController">
             <argument type="service" id="translator"/>
             <argument type="service" id="security.csrf.token_manager"/>
             <argument type="service" id="zentlix_main.bundles"/>
@@ -26,8 +24,7 @@
             <tag name="controller.service_arguments"/>
         </service>
         <service id="zentlix_user.admin.group_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\GroupController"
-                 public="true">
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\GroupController">
             <argument type="service" id="translator"/>
             <argument type="service" id="security.csrf.token_manager"/>
             <argument type="service" id="zentlix_main.bundles"/>
@@ -36,8 +33,7 @@
             <tag name="controller.service_arguments"/>
         </service>
         <service id="zentlix_user.admin.journal_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\JournalController"
-                 public="true">
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\JournalController">
             <argument type="service" id="translator"/>
             <argument type="service" id="security.csrf.token_manager"/>
             <argument type="service" id="zentlix_main.bundles"/>
@@ -46,8 +42,7 @@
             <tag name="controller.service_arguments"/>
         </service>
         <service id="zentlix_user.admin.mailer_template_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\MailerController"
-                 public="true">
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\MailerController">
             <argument type="service" id="translator"/>
             <argument type="service" id="security.csrf.token_manager"/>
             <argument type="service" id="zentlix_main.bundles"/>
@@ -56,8 +51,7 @@
             <tag name="controller.service_arguments"/>
         </service>
         <service id="zentlix_user.admin.user_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\UserController"
-                 public="true">
+                 class="Zentlix\UserBundle\UI\Http\Web\Controller\Admin\UserController">
             <argument type="service" id="translator"/>
             <argument type="service" id="security.csrf.token_manager"/>
             <argument type="service" id="zentlix_main.bundles"/>

@@ -13,10 +13,10 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Application\Command\Site;
 
 use Symfony\Component\Validator\Constraints;
-use Zentlix\MainBundle\Application\Command\DynamicPropertyCommand;
-use Zentlix\MainBundle\Application\Command\EmailTrait;
 use Zentlix\MainBundle\Domain\Site\Entity\Site as SiteEntity;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\DynamicPropertyCommand;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\EmailTrait;
 use Zentlix\UserBundle\Domain\User\Entity\Site;
 
 class Command extends DynamicPropertyCommand implements CommandInterface

@@ -14,41 +14,37 @@ namespace Zentlix\UserBundle\UI\Http\Web\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Zentlix\MainBundle\Domain\Dashboard\Service\Widgets;
-use Zentlix\MainBundle\UI\Http\Web\Controller\Admin\AbstractAdminController;
+use Zentlix\MainBundle\Domain\Locale\Entity\Locale;
+use Zentlix\MainBundle\UI\Http\Web\Controller\Admin\ResourceController;
 use Zentlix\UserBundle\Application\Command\AdminSetting\Locale\ChangeLocaleCommand;
 use Zentlix\UserBundle\Application\Command\AdminSetting\Widgets\ChangeWidgetsCommand;
 use Zentlix\UserBundle\Domain\Admin\Service\AdminSettings;
 use Zentlix\UserBundle\UI\Http\Web\Form\Widget\Form;
 
-class AdminSettingsController extends AbstractAdminController
+class AdminSettingsController extends ResourceController
 {
-    public function locale(Request $request): Response
+    public function locale(Locale $locale, Request $request): Response
     {
         try {
-            $this->exec(new ChangeLocaleCommand($request->request->get('locale_id')));
-            return $this->json(['success' => true]);
+            $this->exec(new ChangeLocaleCommand($locale));
+            $request->setLocale($locale->getCode());
+
+            $referer = $request->headers->get('referer');
+
+            return $this->redirect($referer);
         } catch (\Exception $e) {
-            return $this->json($this->error($e->getMessage()));
+            $this->addFlash('error', $e->getMessage());
+
+            return $this->redirectToRoute('admin.index');
         }
     }
 
-    public function widgets(Request $request, Widgets $widgets, AdminSettings $settings): Response
+    public function widgets(AdminSettings $settings): Response
     {
-        try {
-            $command = new ChangeWidgetsCommand($settings->getWidgets(), $widgets->getWidgets());
-            $form = $this->createForm(Form::class, $command);
+        static::$updateSuccessMessage = 'zentlix_user.widgets.update_success';
 
-            $this->handleRequest($request, $form);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $this->exec($command);
-                return $this->json($this->redirectSuccess($this->generateUrl('admin.index'), $this->translator->trans('zentlix_user.widgets.update_success')));
-            }
-        } catch (\Exception $e) {
-            return $this->json($this->error($e->getMessage()));
-        }
-
-        return $this->json($this->liform->transform($form));
+        return $this->updateResource(
+            new ChangeWidgetsCommand($settings->getWidgets()), Form::class, '@MainBundle/admin/widget_settings/settings.html.twig'
+        );
     }
 }

@@ -19,6 +19,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\GreaterThan;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Zentlix\MainBundle\Domain\Bundle\Service\Bundles;
 use Zentlix\MainBundle\UI\Http\Web\FormType\AbstractForm;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
@@ -29,15 +30,18 @@ class Form extends AbstractForm
     protected TranslatorInterface $translator;
     protected ?UserInterface $user;
     protected GroupRepository $groupRepository;
+    protected Bundles $bundles;
 
     public function __construct(EventDispatcherInterface $eventDispatcher,
                                 TranslatorInterface $translator,
                                 Security $security,
-                                GroupRepository $groupRepository)
+                                GroupRepository $groupRepository,
+                                Bundles $bundles)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
         $this->groupRepository = $groupRepository;
+        $this->bundles = $bundles;
         $this->user = $security->getUser();
     }
 

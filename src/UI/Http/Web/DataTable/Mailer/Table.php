@@ -12,9 +12,10 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\UI\Http\Web\DataTable\Mailer;
 
-use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
-use Zentlix\MainBundle\Domain\DataTable\Column\TextColumn;
+use Omines\DataTablesBundle\Column\TwigColumn;
+use Omines\DataTablesBundle\Column\TextColumn;
+use Omines\DataTablesBundle\DataTable;
 use Zentlix\MainBundle\Infrastructure\Share\DataTable\AbstractDataTableType;
 use Zentlix\UserBundle\Domain\Mailer\Event\Template\Table as TableEvent;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
@@ -23,30 +24,29 @@ class Table extends AbstractDataTableType
 {
     public function configure(DataTable $dataTable, array $options)
     {
-        $dataTable->setName($this->router->generate('admin.mailer.list'));
-        $dataTable->setTitle('zentlix_user.mailer.templates');
-        $dataTable->setCreateBtnLabel('zentlix_user.mailer.create.action');
+        $dataTable->setName('mailer-datatable');
+        $events = $this->container->get('zentlix_user.mailer_events');
+        $providers = $this->container->get('zentlix_user.mailer_providers');
 
         $dataTable
             ->add('id', TextColumn::class, ['label' => 'zentlix_main.id', 'visible' => true])
-            ->add('title', TextColumn::class,
+            ->add('title', TwigColumn::class,
                 [
-                    'render'  => fn($value, Template $context) => sprintf('<a href="%s">%s</a>',
-                        $this->router->generate('admin.mailer.update', ['id' => $context->getId()]), $value),
-                    'visible' => true,
-                    'label'   => 'zentlix_main.title'
+                    'template' => '@UserBundle/admin/mailer/datatable/title.html.twig',
+                    'visible'  => true,
+                    'label'    => 'zentlix_main.title'
                 ])
-            ->add('provider_title', TextColumn::class, [
+            ->add('provider', TextColumn::class, [
                 'label'     => 'zentlix_user.mailer.provider',
                 'visible'   => true,
-                'translate' => true
+                'render'    => fn($value) => $this->translator->trans($providers->get($value)->getTitle())
             ])
             ->add('event', TextColumn::class,
                 [
-                    'data'      => fn(Template $template) => $template->getEvent()->getTitle(),
+                    'data'      => fn(Template $template) => $template->getEvent(),
                     'label'     => 'zentlix_user.mailer.event',
                     'visible'   => true,
-                    'translate' => true
+                    'render'    => fn($value) => $this->translator->trans($events->get($value)->getTitle())
                 ])
             ->add('theme', TextColumn::class, ['label' => 'main.theme', 'visible' => false])
             ->add('code', TextColumn::class, ['label' => 'zentlix_main.symbol_code', 'visible' => false])

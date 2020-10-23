@@ -12,6 +12,6 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\Group;
 
-use Zentlix\MainBundle\Application\Command\CreateCommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CreateCommandInterface;
 
 class CreateCommand extends Command implements CreateCommandInterface {}

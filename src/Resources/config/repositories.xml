@@ -19,10 +19,6 @@
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry"/>
             <tag name="doctrine.repository_service"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository">
-            <argument type="service" id="Doctrine\Persistence\ManagerRegistry"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
         <service id="Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository">
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry"/>
             <tag name="doctrine.repository_service"/>

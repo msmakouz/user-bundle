@@ -13,37 +13,28 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Domain\Mailer\Service;
 
 use Zentlix\MainBundle\Domain\Site\Service\Sites;
-use Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository;
 use Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository;
-use Zentlix\UserBundle\Infrastructure\Share\Mailer\Service\MailerInterface;
+use Zentlix\UserBundle\Infrastructure\Mailer\Service\MailerInterface;
 
 class Mailer implements MailerInterface
 {
     private Providers $providers;
     private TemplateRepository $templateRepository;
-    private EventRepository $eventRepository;
     private Sites $sites;
 
-    public function __construct(Providers $providers,
-                                TemplateRepository $templateRepository,
-                                EventRepository $eventRepository,
-                                Sites $sites)
+    public function __construct(Providers $providers, TemplateRepository $templateRepository, Sites $sites)
     {
         $this->providers = $providers;
         $this->templateRepository = $templateRepository;
-        $this->eventRepository = $eventRepository;
         $this->sites = $sites;
     }
 
     public function send(string $event, string $defaultTo, array $data = []): void
     {
-        $eventId = $this->eventRepository->getOneByCode($event)->getId();
-
-        $templates = $this->templateRepository->findActiveByEventSiteId($eventId, $this->sites->getCurrentSiteId());
+        $templates = $this->templateRepository->findActiveByEventSiteId($event, $this->sites->getCurrentSiteId());
 
         foreach ($templates as $template) {
-            $provider = $this->providers->getProvider($template->getProvider());
-            $provider->send($template, $defaultTo, $data);
+            $this->providers->get($template->getProvider())->send($template, $defaultTo, $data);
         }
     }
 }

@@ -10,9 +10,10 @@
 
 declare(strict_types=1);
 
-namespace Zentlix\UserBundle\Infrastructure\Share\Mailer\Service;
+namespace Zentlix\UserBundle\Infrastructure\Mailer\Event;
 
-interface MailerInterface
+interface EventInterface
 {
-    public function send(string $event, string $defaultTo, array $data = []): void;
+    public function getTitle(): string;
+    public function getAvailableVariables(): array;
 }

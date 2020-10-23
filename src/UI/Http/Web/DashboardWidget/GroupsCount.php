@@ -49,14 +49,14 @@ class GroupsCount extends AbstractProgressbarWidget
         return $this->groupRepository->count([]);
     }
 
-    public function getBackgroundColor(): string
+    public function getBackgroundGradient(): string
     {
-        return self::BACKGROUND_COLOR_WHITE;
+        return '';
     }
 
     public function getProgressbarBackgroundGradient(): string
     {
-        return self::PROGRESSBAR_BACKGROUND_GRADIENT_GREEN;
+        return self::GRADIENT_GREEN;
     }
 
     public function getColor(): string

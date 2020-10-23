@@ -7,65 +7,50 @@
     <services>
         <service id="zentlix_user.admin.exist_widget_specification"
                  class="Zentlix\UserBundle\Domain\Admin\Specification\ExistWidgetSpecification">
+            <argument type="service" id="zentlix_main.widgets"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Admin\Specification\ExistWidgetSpecification"
-                 alias="zentlix_user.admin.exist_widget_specification"/>
 
         <service id="zentlix_user.group.exist_group_by_code_specification"
                  class="Zentlix\UserBundle\Domain\Group\Specification\ExistGroupByCodeSpecification">
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Group\Specification\ExistGroupByCodeSpecification"
-                 alias="zentlix_user.group.exist_group_by_code_specification"/>
 
         <service id="zentlix_user.group.unique_code_specification"
                  class="Zentlix\UserBundle\Domain\Group\Specification\UniqueCodeSpecification">
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Group\Specification\UniqueCodeSpecification"
-                 alias="zentlix_user.group.unique_code_specification"/>
 
         <service id="zentlix_user.mailer.exist_event_specification"
                  class="Zentlix\UserBundle\Domain\Mailer\Specification\ExistEventSpecification">
-            <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository"/>
+            <argument type="service" id="zentlix_user.mailer_events"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Mailer\Specification\ExistEventSpecification"
-                 alias="zentlix_user.mailer.exist_event_specification"/>
 
         <service id="zentlix_user.mailer.exist_provider_specification"
                  class="Zentlix\UserBundle\Domain\Mailer\Specification\ExistProviderSpecification">
             <argument type="service" id="zentlix_user.mailer_providers"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Mailer\Specification\ExistProviderSpecification"
-                 alias="zentlix_user.mailer.exist_provider_specification"/>
 
         <service id="zentlix_user.mailer.unique_code_specification"
                  class="Zentlix\UserBundle\Domain\Mailer\Specification\UniqueCodeSpecification">
             <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Mailer\Specification\UniqueCodeSpecification"
-                 alias="zentlix_user.mailer.unique_code_specification"/>
 
         <service id="zentlix_user.user.exist_user_specification"
                  class="Zentlix\UserBundle\Domain\User\Specification\ExistUserSpecification">
             <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\UserRepository"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\User\Specification\ExistUserSpecification"
-                 alias="zentlix_user.user.exist_user_specification"/>
 
         <service id="zentlix_user.user.unique_email_specification"
                  class="Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification">
             <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\UserRepository"/>
             <argument type="service" id="translator"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification"
-                 alias="zentlix_user.user.unique_email_specification"/>
     </services>
 </container>

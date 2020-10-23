@@ -1,0 +1,77 @@
+{% extends '@MainBundle/admin/layouts/base.html.twig' %}
+
+{% block title %}{{ 'zentlix_user.group.update.process' | trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ path('admin.index') }}">{{ 'zentlix_main.control_panel' | trans }}</a></li>
+    <li class="breadcrumb-item active">{{ 'zentlix_user.group.update.process' | trans }}</li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="card w-100">
+            <div class="card-header">
+                {{ 'zentlix_user.group.update.process' | trans }}
+                {% include '@MainBundle/admin/partials/delete_confirmation.html.twig' with {
+                    'title': 'zentlix_user.group.delete.action',
+                    'confirmation': 'zentlix_user.group.delete.confirmation',
+                    'path': path('admin.group.delete', {'id': group.id})
+                } %}
+            </div>
+            {{ form_start(form) }}
+            <div class="card-body">
+                <div class="nav-tabs border-bottom-0">
+                    <ul class="nav nav-tabs" role="tablist">
+                        {% for code, child in form %}
+                            {% if code != '_token' %}
+                                <li class="nav-item">
+                                    <a class="nav-link {% if loop.index == 1 %}active{% endif %}" data-toggle="tab" href="#{{ code }}" role="tab" aria-controls="{{ child.vars.label }}">
+                                        {{ child.vars.label | trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <div class="tab-content pt-4">
+                        {% for code, child in form %}
+                            {% if code != '_token' %}
+                                <div class="tab-pane {% if loop.index == 1 %}active{% endif %}" id="{{ code }}" role="tabpanel">
+                                    {% if code == 'rights' %}
+                                        <div class="accordion" id="group-rights">
+                                            {% for rightCode, rightChild in child %}
+                                                <div class="card mb-0">
+                                                    <div class="card-header" id="heading-{{ rightCode }}">
+                                                        <div class="mb-0">
+                                                            <a data-toggle="collapse" href="#{{ rightCode }}" aria-expanded="true" aria-controls="{{ rightCode }}" role="button">
+                                                                <i class="c-icon c-icon-2xl cil-chevron-bottom float-right"></i>
+                                                                {{ rightChild.vars.label | trans }}
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="collapse" id="{{ rightCode }}" aria-labelledby="heading-{{ rightCode }}" data-parent="#group-rights">
+                                                        <div class="card-body">
+                                                            {{ form_row(rightChild, {'label': false}) }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        {{ form_row(child, {'label': false}) }}
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                      </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-sm btn-primary" type="submit">
+                    <i class="fa fa-dot-circle-o"></i> {{ 'zentlix_main.save' | trans }}
+                </button>
+                <a href="{{ path('admin.group.list') }}" class="btn btn-sm btn-secondary" type="button">{{ 'zentlix_main.cancel' | trans }}</a>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

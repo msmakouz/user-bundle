@@ -25,17 +25,15 @@ class CreateForm extends Form
         parent::buildForm($builder, $options);
 
         $sort = $builder->get('main')->get('sort')->getOptions();
-        $builder->get('main')->add('sort', IntegerType::class, array_replace($sort, ['data' => $this->groupRepository->getMaxSort() + 1]));
+        $builder->get('main')->add('sort', IntegerType::class, array_replace($sort, [
+            'data' => $this->groupRepository->getMaxSort() + 1
+        ]));
 
         $this->eventDispatcher->dispatch(new CreateFormEvent($builder));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'label'      => 'zentlix_user.group.create.process',
-            'data_class' => CreateCommand::class,
-            'form'       => self::SIMPLE_FORM
-        ]);
+        $resolver->setDefaults(['data_class' => CreateCommand::class]);
     }
 }

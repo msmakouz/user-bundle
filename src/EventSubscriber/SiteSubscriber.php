@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Zentlix\MainBundle\Application\Command\DynamicPropertyCommand;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\DynamicPropertyCommand;
 use Zentlix\MainBundle\Application\Command\Site;
 use Zentlix\MainBundle\Domain\Site\Entity;
 use Zentlix\MainBundle\Domain\Site\Event\Site as SiteEvent;

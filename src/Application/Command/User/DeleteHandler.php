@@ -14,11 +14,12 @@ namespace Zentlix\UserBundle\Application\Command\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
+use Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository;
+use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
 use Zentlix\UserBundle\Domain\User\Event\User\BeforeDelete;
 use Zentlix\UserBundle\Domain\User\Event\User\AfterDelete;
-use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
-use Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository;
+use function is_null;
 
 class DeleteHandler implements CommandHandlerInterface
 {
@@ -56,7 +57,6 @@ class DeleteHandler implements CommandHandlerInterface
         }
 
         $this->entityManager->remove($command->user);
-
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(new AfterDelete($userId));

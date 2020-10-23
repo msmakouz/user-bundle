@@ -14,10 +14,10 @@ namespace Zentlix\UserBundle\Application\Command\AdminSetting\Widgets;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
-use Zentlix\UserBundle\Domain\Admin\Service\AdminSettings;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Admin\Event\Setting\BeforeChangeWidgets;
 use Zentlix\UserBundle\Domain\Admin\Event\Setting\AfterChangeWidgets;
+use Zentlix\UserBundle\Domain\Admin\Service\AdminSettings;
 use Zentlix\UserBundle\Domain\Admin\Specification\ExistWidgetSpecification;
 
 class ChangeWidgetsHandler implements CommandHandlerInterface
@@ -40,16 +40,14 @@ class ChangeWidgetsHandler implements CommandHandlerInterface
 
     public function __invoke(ChangeWidgetsCommand $command): void
     {
-        foreach ($command->availableWidgets as $widget) {
-            $reflection = new \ReflectionClass($widget);
-            $this->existWidgetSpecification->isExist($reflection->getName());
-            $command->widgets[$reflection->getName()] = $command->getProperty(str_replace('\\', ':', $reflection->getName()));
+        foreach (get_object_vars($command) as $widget => $isVisible) {
+            $this->existWidgetSpecification->isExist($widget);
         }
 
-        $this->eventDispatcher->dispatch(new BeforeChangeWidgets($command->widgets));
+        $this->eventDispatcher->dispatch(new BeforeChangeWidgets($command));
 
         $settings = $this->adminSettings->getSettings();
-        $settings->setWidgets($command->widgets);
+        $settings->setWidgets(get_object_vars($command));
 
         $this->entityManager->flush();
 

@@ -15,15 +15,16 @@ namespace Zentlix\UserBundle\Application\Command\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
+use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
 use Zentlix\UserBundle\Domain\Group\Specification\ExistGroupByCodeSpecification;
-use Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification;
+use Zentlix\UserBundle\Domain\Mailer\MailEvent\UserRegistration;
 use Zentlix\UserBundle\Domain\User\Event\User\BeforeCreate;
 use Zentlix\UserBundle\Domain\User\Event\User\AfterCreate;
 use Zentlix\UserBundle\Domain\User\Entity\User;
-use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
-use Zentlix\UserBundle\Infrastructure\Share\Mailer\Service\MailerInterface;
+use Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification;
+use Zentlix\UserBundle\Infrastructure\Mailer\Service\MailerInterface;
 
 class CreateHandler implements CommandHandlerInterface
 {
@@ -67,7 +68,7 @@ class CreateHandler implements CommandHandlerInterface
         $this->entityManager->flush();
 
         if($command->sendRegistrationEmail) {
-            $this->mailer->send('user-registration', $user->getEmail()->getValue(), ['user' => $user]);
+            $this->mailer->send(UserRegistration::class, $user->getEmail()->getValue(), ['user' => $user]);
         }
 
         $this->eventDispatcher->dispatch(new AfterCreate($user, $command));

@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\EventSubscriber;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zentlix\MainBundle\Domain\Bundle\Entity\Bundle;
@@ -24,13 +23,11 @@ use Zentlix\UserBundle\UserBundle;
 
 class InstallBundleSubscriber implements EventSubscriberInterface
 {
-    private EntityManagerInterface $entityManager;
     private TranslatorInterface $translator;
     private CommandBus $commandBus;
 
-    public function __construct(EntityManagerInterface $entityManager, TranslatorInterface $translator, CommandBus $commandBus)
+    public function __construct(TranslatorInterface $translator, CommandBus $commandBus)
     {
-        $this->entityManager = $entityManager;
         $this->translator = $translator;
         $this->commandBus = $commandBus;
     }

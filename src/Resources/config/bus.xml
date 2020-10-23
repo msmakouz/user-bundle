@@ -9,9 +9,7 @@
 
         <!-- Command bus -->
         <service id="zentlix_user.admin_setting.change_locale_handler" class="Zentlix\UserBundle\Application\Command\AdminSetting\Locale\ChangeLocaleHandler">
-            <argument type="service" id="zentlix_main.locale_exist_locale_specification"/>
             <argument type="service" id="zentlix_user.admin_settings"/>
-            <argument type="service" id="Zentlix\MainBundle\Domain\Locale\Repository\LocaleRepository"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="session"/>
@@ -50,9 +48,7 @@
             <argument type="service" id="zentlix_user.mailer.exist_provider_specification"/>
             <argument type="service" id="zentlix_main.site_exist_site_specification"/>
             <argument type="service" id="zentlix_user.mailer.unique_code_specification"/>
-            <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository"/>
             <argument type="service" id="Zentlix\MainBundle\Domain\Site\Repository\SiteRepository"/>
-            <argument type="service" id="zentlix_user.mailer_providers"/>
             <tag name="messenger.message_handler"/>
         </service>
         <service id="zentlix_user.mailer.template.delete_handler" class="Zentlix\UserBundle\Application\Command\Mailer\Template\DeleteHandler">
@@ -67,9 +63,7 @@
             <argument type="service" id="zentlix_user.mailer.exist_provider_specification"/>
             <argument type="service" id="zentlix_main.site_exist_site_specification"/>
             <argument type="service" id="zentlix_user.mailer.unique_code_specification"/>
-            <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository"/>
             <argument type="service" id="Zentlix\MainBundle\Domain\Site\Repository\SiteRepository"/>
-            <argument type="service" id="zentlix_user.mailer_providers"/>
             <tag name="messenger.message_handler"/>
         </service>
 
@@ -113,7 +107,6 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="security.password_encoder"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
-            <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\UserRepository"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository"/>
             <tag name="messenger.message_handler"/>
         </service>

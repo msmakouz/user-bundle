@@ -12,37 +12,27 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\Group;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints;
-use Zentlix\MainBundle\Application\Command\UpdateCommandInterface;
-use Zentlix\MainBundle\AbstractZentlixBundle;
-use Zentlix\MainBundle\Domain\Bundle\Entity\Bundle;
-use Zentlix\MainBundle\Domain\Bundle\Repository\BundleRepository;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\UpdateCommandInterface;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 
 class UpdateCommand extends Command implements UpdateCommandInterface
 {
     /** @Constraints\NotBlank() */
     public ?string $code = null;
+    public array $rights = [];
 
-    public static array $rightsTitles = [];
-    public static array $bundleTitles = [];
-
-    private ContainerInterface $container;
-
-    private BundleRepository $bundleRepository;
-
-    public function __construct(UserGroup $group, BundleRepository $bundleRepository, ContainerInterface $container)
+    public function __construct(UserGroup $group)
     {
-        $this->container = $container;
-        $this->bundleRepository = $bundleRepository;
-
-        $this->title = $group->getTitle();
-        $this->code = $group->getCode();
+        $this->title      = $group->getTitle();
+        $this->code       = $group->getCode();
         $this->group_role = $group->getGroupRole();
-        $this->sort = $group->getSort();
-        $this->entity = $group;
-        $this->setRights();
+        $this->sort       = $group->getSort();
+        $this->entity     = $group;
+
+        foreach ($group->getRights() as $class => $isVisible) {
+            $this->__set($class, $isVisible);
+        }
     }
 
     public function getEntity(): UserGroup
@@ -50,32 +40,22 @@ class UpdateCommand extends Command implements UpdateCommandInterface
         return $this->entity;
     }
 
-    public function getRights(): array
+    public function __get($right): bool
     {
-        $rights = [];
-        foreach (self::$rightsTitles as $right => $val) {
-            $rights[$right] = $this->{str_replace('\\', ':', $right)};
+        if($this->__isset($right)) {
+            return $this->rights[(string) str_replace(':', '\\', $right)];
         }
 
-        return $rights;
+        return false;
     }
 
-    private function setRights()
+    public function __set($right, $isGranted): void
     {
-        $bundles = $this->bundleRepository->findAll();
+        $this->rights[(string) str_replace(':', '\\', $right)] = $isGranted;
+    }
 
-        /** @var Bundle $bundle */
-        foreach ($bundles as $bundle) {
-            $class = $bundle->getClass();
-            /** @var AbstractZentlixBundle $kernel */
-            $kernel = new $class($this->container);
-            if(count($rights = $kernel->configureRights())) {
-                foreach ($rights as $property => $title) {
-                    $this->createProperty(str_replace('\\', ':', $property), $this->entity->isAccessGranted($property));
-                    self::$rightsTitles[$property] = $title;
-                    self::$bundleTitles[$bundle->getTitle()][] = str_replace('\\', ':', $property);
-                }
-            }
-        }
+    public function __isset($right): bool
+    {
+        return isset($this->rights[(string) str_replace(':', '\\', $right)]);
     }
 }

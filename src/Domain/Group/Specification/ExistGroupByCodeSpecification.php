@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\Domain\Group\Specification;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Zentlix\MainBundle\Application\Query\NotFoundException;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\NotFoundException;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
 
 final class ExistGroupByCodeSpecification

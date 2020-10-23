@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\User;
 
-use Zentlix\MainBundle\Application\Command\CreateCommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CreateCommandInterface;
 use Zentlix\UserBundle\Domain\User\Entity\User;
 
 class CreateCommand extends Command implements CreateCommandInterface

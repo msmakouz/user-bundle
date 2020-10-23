@@ -15,12 +15,11 @@ namespace Zentlix\UserBundle\Application\Command\User;
 use Symfony\Component\Validator\Constraints;
 use libphonenumber\PhoneNumber;
 use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as PhoneConstraint;
-use Zentlix\MainBundle\Application\Command\DynamicPropertyCommand;
-use Zentlix\MainBundle\Application\Command\EmailTrait;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\EmailTrait;
 use Zentlix\UserBundle\Domain\User\Entity\User;
 
-class Command extends DynamicPropertyCommand implements CommandInterface
+class Command implements CommandInterface
 {
     use EmailTrait;
 

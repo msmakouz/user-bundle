@@ -20,7 +20,6 @@ use Zentlix\UserBundle\Application\Command\User\CreateCommand;
 use Zentlix\UserBundle\Domain\User\Service\Authenticator;
 use Zentlix\UserBundle\UI\Http\Web\Form\User\RegistrationForm;
 use Zentlix\MainBundle\UI\Http\Web\Controller\AbstractController;
-use Zentlix\UserBundle\UI\Http\Web\DefaultTemplate;
 
 class UserController extends AbstractController
 {
@@ -33,7 +32,7 @@ class UserController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render($this->template->getConfigParam('user.login', DefaultTemplate::LOGIN), [
+        return $this->render($this->template->getConfigParam('user.login', $this->getParameter('zentlix_user.login_template')), [
             'last_username' => $lastUsername,
             'error' => $error
         ]);
@@ -45,7 +44,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        return $this->render($this->template->getConfigParam('user.profile', DefaultTemplate::PROFILE), [
+        return $this->render($this->template->getConfigParam('user.profile', $this->getParameter('zentlix_user.profile_template')), [
             'user' => $this->getUser()
         ]);
     }
@@ -68,13 +67,13 @@ class UserController extends AbstractController
                 );
             }
         } catch (\Exception $e) {
-            return $this->render($this->template->getConfigParam('user.registration', DefaultTemplate::REGISTER), [
+            return $this->render($this->template->getConfigParam('user.registration', $this->getParameter('zentlix_user.register_template')), [
                 'form' => $form->createView(),
                 'error' => $e->getMessage()
             ]);
         }
 
-        return $this->render($this->template->getConfigParam('user.registration', DefaultTemplate::REGISTER), [
+        return $this->render($this->template->getConfigParam('user.registration', $this->getParameter('zentlix_user.register_template')), [
             'form' => $form->createView()
         ]);
     }

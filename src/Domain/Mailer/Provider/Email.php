@@ -20,9 +20,8 @@ use Twig\Environment;
 use Zentlix\MainBundle\Domain\Site\Service\Sites;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
 use Zentlix\UserBundle\Domain\Mailer\Event\BeforeSend;
-use Zentlix\UserBundle\Infrastructure\Share\Mailer\Provider\ProviderInterface;
+use Zentlix\UserBundle\Infrastructure\Mailer\Provider\ProviderInterface;
 use Zentlix\UserBundle\Domain\User\Repository\SiteRepository;
-use Zentlix\UserBundle\UI\Http\Web\DefaultTemplate;
 
 class Email implements ProviderInterface
 {
@@ -31,18 +30,21 @@ class Email implements ProviderInterface
     private SiteRepository $siteRepository;
     private Sites $sites;
     private Environment $twig;
+    private string $defaultLayout;
 
     public function __construct(EventDispatcherInterface $eventDispatcher,
                                 MailerInterface $mailer,
                                 SiteRepository $siteRepository,
                                 Sites $sites,
-                                Environment $twig)
+                                Environment $twig,
+                                string $defaultLayout)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
         $this->siteRepository = $siteRepository;
         $this->sites = $sites;
         $this->twig = $twig;
+        $this->defaultLayout = $defaultLayout;
     }
 
     public function getCode(): string
@@ -90,9 +92,7 @@ class Email implements ProviderInterface
 
     private function getSenderName(): string
     {
-        $site = $this->sites->getCurrentSite();
-
-        return $site->getTitle();
+        return $this->sites->getCurrentSite()->getTitle();
     }
 
     private function getEmailLayout(): string
@@ -104,6 +104,6 @@ class Email implements ProviderInterface
             $layout = DIRECTORY_SEPARATOR . $template->getFolder() . DIRECTORY_SEPARATOR . $template->getConfigParam('user.email_layout');
         }
 
-        return $layout ?? DefaultTemplate::EMAIL_LAYOUT;
+        return $layout ?? $this->defaultLayout;
     }
 }

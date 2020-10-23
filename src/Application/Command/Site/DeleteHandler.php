@@ -14,7 +14,7 @@ namespace Zentlix\UserBundle\Application\Command\Site;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\User\Event\Site\AfterDelete;
 use Zentlix\UserBundle\Domain\User\Event\Site\BeforeDelete;
 
@@ -37,7 +37,6 @@ class DeleteHandler implements CommandHandlerInterface
         $this->eventDispatcher->dispatch(new BeforeDelete($command));
 
         $this->entityManager->remove($command->site);
-
         $this->entityManager->flush();
 
         $this->eventDispatcher->dispatch(new AfterDelete($siteId));

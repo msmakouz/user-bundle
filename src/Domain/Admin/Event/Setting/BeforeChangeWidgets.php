@@ -12,12 +12,14 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Domain\Admin\Event\Setting;
 
+use Zentlix\UserBundle\Application\Command\AdminSetting\Widgets\ChangeWidgetsCommand;
+
 final class BeforeChangeWidgets
 {
-    private array $widgets;
+    private ChangeWidgetsCommand $command;
 
-    public function __construct(array $widgets)
+    public function __construct(ChangeWidgetsCommand $command)
     {
-        $this->widgets = $widgets;
+        $this->command = $command;
     }
 }

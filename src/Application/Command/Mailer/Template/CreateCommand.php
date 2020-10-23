@@ -12,23 +12,6 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\Mailer\Template;
 
-use Symfony\Component\HttpFoundation\Request;
-use Zentlix\MainBundle\Application\Command\CreateCommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CreateCommandInterface;
 
-class CreateCommand extends Command implements CreateCommandInterface
-{
-    public function __construct(Request $request = null)
-    {
-        if($request) {
-            $this->title = $request->request->get('title');
-            $this->active = $request->request->get('active', true);
-            $this->event = $request->request->get('event');
-            $this->provider = $request->request->get('provider', 'email');
-            $this->theme = $request->request->get('theme');
-            $this->code = $request->request->get('code');
-            $this->body = $request->request->get('body');
-            $this->recipient = $request->request->get('recipient', '%default_to%');
-            $this->sites = array_flip($request->request->get('sites', []));
-        }
-    }
-}
+class CreateCommand extends Command implements CreateCommandInterface {}

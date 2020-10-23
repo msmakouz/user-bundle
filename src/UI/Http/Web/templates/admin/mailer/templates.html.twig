@@ -1,0 +1,29 @@
+{% extends '@MainBundle/admin/layouts/base.html.twig' %}
+
+{% block title %}{{ 'zentlix_user.mailer.templates' | trans }}{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ path('admin.index') }}">{{ 'zentlix_main.control_panel' | trans }}</a></li>
+    <li class="breadcrumb-item active">{{ 'zentlix_user.mailer.templates' | trans }}</li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="card w-100">
+            <div class="card-header">
+                {{ 'zentlix_user.mailer.templates' | trans }}
+                <a href="{{ path('admin.mailer.create') }}" class="btn btn-primary btn-sm float-right">
+                    {{ 'zentlix_user.mailer.create.action' | trans }}
+                </a>
+            </div>
+            <div class="card-body">
+                <div id="mailer-datatable">{{ 'zentlix_main.loading_dots' | trans }}</div>
+                <script>
+                    $(document).ready(function () {
+                        $('#mailer-datatable').initDataTables({{ datatable_settings(datatable) }});
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+{% endblock %}

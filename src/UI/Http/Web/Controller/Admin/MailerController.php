@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Zentlix\UserBundle\UI\Http\Web\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
 use Zentlix\MainBundle\UI\Http\Web\Controller\Admin\ResourceController;
 use Zentlix\UserBundle\Application\Command\Mailer\Template\CreateCommand;
 use Zentlix\UserBundle\Application\Command\Mailer\Template\DeleteCommand;
@@ -31,19 +30,21 @@ class MailerController extends ResourceController
     public static $deleteSuccessMessage = 'zentlix_user.mailer.delete.success';
     public static $redirectAfterAction  = 'admin.mailer.list';
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
-        return $this->listResource(new DataTableQuery(Table::class), $request);
+        return $this->listResource(new DataTableQuery(Table::class),'@UserBundle/admin/mailer/templates.html.twig');
     }
 
-    public function create(Request $request): Response
+    public function create(): Response
     {
-        return $this->createResource(new CreateCommand($request), CreateForm::class, $request);
+        return $this->createResource(new CreateCommand(), CreateForm::class, '@UserBundle/admin/mailer/create.html.twig');
     }
 
-    public function update(Template $template, Request $request): Response
+    public function update(Template $template): Response
     {
-        return $this->updateResource(new UpdateCommand($template, $request), UpdateForm::class, $request);
+        return $this->updateResource(
+            new UpdateCommand($template), UpdateForm::class, '@UserBundle/admin/mailer/update.html.twig', ['template' => $template]
+        );
     }
 
     public function delete(Template $template): Response

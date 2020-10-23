@@ -37,21 +37,29 @@ class UpdateForm extends Form
         $builder->get('main')->add('group_role', Type\ChoiceType::class, array_replace($role, [
             'disabled' => $group->isSystemGroup($group->getCode())
         ]));
-
         if($group->isRoleAdmin()) {
-            $rights = $builder->create('rights', Type\TreeType::class, [
-                'label' => 'zentlix_user.admin_rights',
-                'required' => false,
-                'inherit_data' => true,
-                'tree_group' => UpdateCommand::$bundleTitles
+            $rights = $builder->create('rights', Type\FormType::class, [
+                'label'        => 'zentlix_user.admin_rights',
+                'required'     => false,
+                'inherit_data' => true
             ]);
 
-            foreach (UpdateCommand::$rightsTitles as $right => $rightsTitle) {
-                $rights->add(str_replace('\\', ':', $right), Type\CheckboxType::class, [
-                    'label' => $rightsTitle,
-                    'required' => false,
-                    'disabled' => $group->getCode() === UserGroup::ADMIN_GROUP || !$this->user->isAdminGroup()
+            foreach ($this->bundles->getBundles() as $class => $bundle) {
+                $bundleRights = $builder->create(str_replace('\\', '_', $class), Type\FormType::class, [
+                    'label'        => $bundle->getTitle(),
+                    'required'     => false,
+                    'inherit_data' => true,
+                    'attr' => ['class' => 'bundle-rights']
                 ]);
+                foreach ($bundle->configureRights() as $right => $rightsTitle) {
+                    $bundleRights->add(str_replace('\\', ':', $right), Type\CheckboxType::class, [
+                        'label'    => $rightsTitle,
+                        'required' => false,
+                        'disabled' => $group->getCode() === UserGroup::ADMIN_GROUP || !$this->user->isAdminGroup(),
+                        'data'     => $group->getCode() === UserGroup::ADMIN_GROUP ? true : $builder->getData()->{str_replace('\\', ':', $right)}
+                    ]);
+                }
+                $rights->add($bundleRights);
             }
 
             $builder->add($rights);
@@ -62,12 +70,6 @@ class UpdateForm extends Form
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'label'          => 'zentlix_user.group.update.process',
-            'data_class'     =>  UpdateCommand::class,
-            'form'           =>  self::TABS_FORM,
-            'deleteBtnLabel' => 'zentlix_user.group.delete.action',
-            'deleteConfirm'  => 'zentlix_user.group.delete.confirmation'
-        ]);
+        $resolver->setDefaults(['data_class' => UpdateCommand::class]);
     }
 }

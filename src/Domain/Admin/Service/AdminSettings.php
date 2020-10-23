@@ -14,10 +14,12 @@ namespace Zentlix\UserBundle\Domain\Admin\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Zentlix\MainBundle\Domain\Locale\Entity\Locale;
 use Zentlix\MainBundle\Domain\Setting\Service\Settings;
 use Zentlix\UserBundle\Domain\Admin\Entity\Setting;
 use Zentlix\UserBundle\Domain\User\Entity\User;
+use function is_null;
 
 class AdminSettings
 {
@@ -34,7 +36,8 @@ class AdminSettings
     public function __construct(TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, Settings $settings)
     {
         $token = $tokenStorage->getToken();
-        if(is_null($token) === false) {
+
+        if(is_null($token) === false && $token->getUser() instanceof UserInterface) {
             $this->userId = $token->getUser()->getId();
         }
 

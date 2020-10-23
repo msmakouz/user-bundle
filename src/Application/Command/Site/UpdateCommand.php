@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\Site;
 
-use Zentlix\MainBundle\Application\Command\UpdateCommandInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\UpdateCommandInterface;
 use Zentlix\UserBundle\Domain\User\Entity\Site;
 
 class UpdateCommand extends Command implements UpdateCommandInterface
@@ -20,7 +20,6 @@ class UpdateCommand extends Command implements UpdateCommandInterface
     public function __construct(Site $site)
     {
         $this->site = $site->getSite();
-
         $this->entity = $site;
     }
 }

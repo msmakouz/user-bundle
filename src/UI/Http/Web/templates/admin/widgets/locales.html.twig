@@ -1,0 +1,12 @@
+<li class="c-header-nav-item dropdown d-md-down-none mx-2">
+    <a id="select-language" class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+        <span class="flag-icon {{ currentLocale.icon }}"></span> {{ currentLocale.title }}
+    </a>
+    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg pt-0 pb-0 select-language-dropdown">
+        {% for locale in locales %}
+            <a class="dropdown-item" href="{{ path('admin.settings.locale', {'id': locale.id}) }}">
+                <span class="flag-icon {{ locale.icon }}"></span> {{ locale.title }}
+            </a>
+        {% endfor %}
+    </div>
+</li>

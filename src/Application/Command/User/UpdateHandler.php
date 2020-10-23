@@ -14,16 +14,15 @@ namespace Zentlix\UserBundle\Application\Command\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
 use Zentlix\UserBundle\Domain\Group\Specification\ExistGroupByCodeSpecification;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
-use Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification;
 use Zentlix\UserBundle\Domain\User\Entity\User;
 use Zentlix\UserBundle\Domain\User\Event\User\BeforeUpdate;
 use Zentlix\UserBundle\Domain\User\Event\User\AfterUpdate;
-use Zentlix\UserBundle\Domain\User\Repository\UserRepository;
+use Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification;
 
 class UpdateHandler implements CommandHandlerInterface
 {
@@ -31,7 +30,6 @@ class UpdateHandler implements CommandHandlerInterface
     private EntityManagerInterface $entityManager;
     private EventDispatcherInterface $eventDispatcher;
     private UserPasswordEncoderInterface $passwordEncoder;
-    private UserRepository $userRepository;
     private GroupRepository $groupRepository;
     private ExistGroupByCodeSpecification $existGroupByCodeSpecification;
     private SettingRepository $settingRepository;
@@ -42,7 +40,6 @@ class UpdateHandler implements CommandHandlerInterface
                                 EventDispatcherInterface $eventDispatcher,
                                 UserPasswordEncoderInterface $passwordEncoder,
                                 GroupRepository $groupRepository,
-                                UserRepository $userRepository,
                                 SettingRepository $settingRepository)
     {
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
@@ -50,7 +47,6 @@ class UpdateHandler implements CommandHandlerInterface
         $this->eventDispatcher = $eventDispatcher;
         $this->passwordEncoder = $passwordEncoder;
         $this->groupRepository = $groupRepository;
-        $this->userRepository = $userRepository;
         $this->existGroupByCodeSpecification = $existGroupByCodeSpecification;
         $this->settingRepository = $settingRepository;
     }

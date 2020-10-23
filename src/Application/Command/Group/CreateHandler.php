@@ -14,7 +14,7 @@ namespace Zentlix\UserBundle\Application\Command\Group;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Zentlix\MainBundle\Application\Command\CommandHandlerInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Group\Event\BeforeCreate;
 use Zentlix\UserBundle\Domain\Group\Event\AfterCreate;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;

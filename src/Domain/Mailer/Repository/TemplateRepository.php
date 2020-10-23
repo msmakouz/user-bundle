@@ -33,16 +33,11 @@ class TemplateRepository extends ServiceEntityRepository
         parent::__construct($registry, Template::class);
     }
 
-    /**
-     * @param int $eventId
-     * @param int $siteId
-     * @return Template[]
-     */
-    public function findActiveByEventSiteId(int $eventId, int $siteId): array
+    public function findActiveByEventSiteId(string $event, int $siteId): array
     {
         return $this->createQueryBuilder('template')
-            ->andWhere('template.event = :eventId')
-            ->setParameter(':eventId', $eventId)
+            ->andWhere('template.event = :event')
+            ->setParameter(':event', $event)
             ->andWhere('template.active = 1')
             ->leftJoin('template.sites', 'site')
             ->andWhere('site.id = :id')

@@ -4,10 +4,18 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
+    <parameters>
+        <!-- Default templates -->
+        <parameter key="zentlix_user.login_template">@UserBundle/users/login.html.twig</parameter>
+        <parameter key="zentlix_user.register_template">@UserBundle/users/registration.html.twig</parameter>
+        <parameter key="zentlix_user.profile_template">@UserBundle/users/profile.html.twig</parameter>
+        <parameter key="zentlix_user.email_layout_template">@UserBundle/mailer/layout.html.twig</parameter>
+    </parameters>
+
     <services>
         <defaults autowire="false" autoconfigure="false" public="false"/>
 
-        <service id="zentlix_user.smtp_transport_factory" class="Zentlix\UserBundle\Infrastructure\Share\Mailer\Transport\SmtpTransportFactory">
+        <service id="zentlix_user.smtp_transport_factory" class="Zentlix\UserBundle\Infrastructure\Mailer\Transport\SmtpTransportFactory">
             <argument type="service" id="zentlix_main.sites"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\SiteRepository"/>
             <argument type="service" id="event_dispatcher" on-invalid="null"/>
@@ -23,18 +31,18 @@
         </service>
         <service id="Zentlix\UserBundle\Domain\Admin\Service\AdminSettings" alias="zentlix_user.admin_settings"/>
 
-        <service id="zentlix_user.mailer_providers" class="Zentlix\UserBundle\Domain\Mailer\Service\Providers">
+        <service id="zentlix_user.mailer_providers" class="Zentlix\UserBundle\Domain\Mailer\Service\Providers" public="true">
             <argument type="tagged_iterator" tag="zentlix_user.mailer.provider"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Mailer\Service\Providers" alias="zentlix_user.mailer_providers"/>
+        <service id="zentlix_user.mailer_events" class="Zentlix\UserBundle\Domain\Mailer\Service\Events" public="true">
+            <argument type="tagged_iterator" tag="zentlix_user.mailer.event"/>
+        </service>
 
         <service id="zentlix_user.mailer" class="Zentlix\UserBundle\Domain\Mailer\Service\Mailer">
             <argument type="service" id="zentlix_user.mailer_providers"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\TemplateRepository"/>
-            <argument type="service" id="Zentlix\UserBundle\Domain\Mailer\Repository\EventRepository"/>
             <argument type="service" id="zentlix_main.sites"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\Mailer\Service\Mailer" alias="zentlix_user.mailer"/>
 
         <service id="zentlix_user.authenticator" class="Zentlix\UserBundle\Domain\User\Service\Authenticator">
             <argument type="service" id="doctrine.orm.entity_manager"/>
@@ -47,31 +55,18 @@
         </service>
         <service id="Zentlix\UserBundle\Domain\User\Service\Authenticator" alias="zentlix_user.authenticator"/>
 
-        <!-- Listeners and Subscribers -->
-        <service id="Zentlix\UserBundle\EventListener\LocaleListener">
-            <argument type="service" id="session"/>
-            <argument type="string" id="%kernel.default_locale%"/>
-            <tag name="kernel.event_listener" event="kernel.request"/>
-        </service>
-        <service id="Zentlix\UserBundle\EventSubscriber\SidebarSubscriber">
-            <tag name="kernel.event_subscriber"/>
-        </service>
-        <service id="Zentlix\UserBundle\EventSubscriber\SiteSubscriber">
-            <argument type="service" id="zentlix_main.command_bus"/>
+        <service id="zentlix_user.mailer_email_provider" class="Zentlix\UserBundle\Domain\Mailer\Provider\Email">
+            <argument type="service" id="event_dispatcher"/>
+            <argument type="service" id="mailer"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\SiteRepository"/>
-            <tag name="kernel.event_subscriber"/>
+            <argument type="service" id="zentlix_main.sites"/>
+            <argument type="service" id="twig"/>
+            <argument type="string">%zentlix_user.email_layout_template%</argument>
+            <tag name="zentlix_user.mailer.provider"/>
         </service>
-        <service id="Zentlix\UserBundle\EventSubscriber\UserSubscriber">
-            <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository"/>
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="session"/>
-            <tag name="kernel.event_subscriber"/>
-        </service>
-        <service id="Zentlix\UserBundle\EventSubscriber\InstallBundleSubscriber">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="translator"/>
-            <argument type="service" id="zentlix_main.command_bus"/>
-            <tag name="kernel.event_subscriber"/>
+
+        <service id="zentlix_user.mailer_user_registration_event" class="Zentlix\UserBundle\Domain\Mailer\MailEvent\UserRegistration">
+            <tag name="zentlix_user.mailer.event"/>
         </service>
 
         <service id="zentlix_user.user_bundle" class="Zentlix\UserBundle\UserBundle">
