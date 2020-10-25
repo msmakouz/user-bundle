@@ -17,7 +17,7 @@ use Omines\DataTablesBundle\Column\TwigColumn;
 use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
-use Zentlix\MainBundle\Infrastructure\Share\DataTable\AbstractDataTableType;
+use Zentlix\MainBundle\Infrastructure\DataTable\AbstractDataTableType;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 use Zentlix\UserBundle\Domain\User\Entity\User;
 use Zentlix\UserBundle\Domain\User\Event\User\Table as TableEvent;

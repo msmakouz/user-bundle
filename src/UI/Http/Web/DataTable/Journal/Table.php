@@ -16,7 +16,7 @@ use Omines\DataTablesBundle\DataTable;
 use Omines\DataTablesBundle\Adapter\Doctrine\ORMAdapter;
 use Omines\DataTablesBundle\Column\DateTimeColumn;
 use Omines\DataTablesBundle\Column\TextColumn;
-use Zentlix\MainBundle\Infrastructure\Share\DataTable\AbstractDataTableType;
+use Zentlix\MainBundle\Infrastructure\DataTable\AbstractDataTableType;
 use Zentlix\UserBundle\Domain\Journal\Event\Table as TableEvent;
 use Zentlix\UserBundle\Domain\Journal\Entity\Journal;
 
