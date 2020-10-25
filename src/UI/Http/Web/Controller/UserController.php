@@ -32,7 +32,7 @@ class UserController extends AbstractController
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render($this->template->getConfigParam('user.login', $this->getParameter('zentlix_user.login_template')), [
+        return $this->render($this->template->getConfigParam('user.login', $this->container->getParameter('zentlix_user.login_template')), [
             'last_username' => $lastUsername,
             'error' => $error
         ]);
@@ -44,7 +44,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('index');
         }
 
-        return $this->render($this->template->getConfigParam('user.profile', $this->getParameter('zentlix_user.profile_template')), [
+        return $this->render($this->template->getConfigParam('user.profile', $this->container->getParameter('zentlix_user.profile_template')), [
             'user' => $this->getUser()
         ]);
     }
@@ -67,13 +67,13 @@ class UserController extends AbstractController
                 );
             }
         } catch (\Exception $e) {
-            return $this->render($this->template->getConfigParam('user.registration', $this->getParameter('zentlix_user.register_template')), [
+            return $this->render($this->template->getConfigParam('user.registration', $this->container->getParameter('zentlix_user.register_template')), [
                 'form' => $form->createView(),
                 'error' => $e->getMessage()
             ]);
         }
 
-        return $this->render($this->template->getConfigParam('user.registration', $this->getParameter('zentlix_user.register_template')), [
+        return $this->render($this->template->getConfigParam('user.registration', $this->container->getParameter('zentlix_user.register_template')), [
             'form' => $form->createView()
         ]);
     }
