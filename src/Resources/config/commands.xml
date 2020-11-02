@@ -13,5 +13,10 @@
             <argument type="service" id="libphonenumber\PhoneNumberUtil"/>
             <tag name="console.command"/>
         </service>
+        <service id="zentlix_user.configure_security_command" class="Zentlix\UserBundle\UI\Cli\Command\ConfigureSecurityCommand">
+            <argument type="service" id="filesystem"/>
+            <argument type="string">%kernel.project_dir%</argument>
+            <tag name="console.command"/>
+        </service>
     </services>
 </container>
