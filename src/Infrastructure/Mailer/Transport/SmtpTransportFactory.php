@@ -35,12 +35,14 @@ final class SmtpTransportFactory extends AbstractTransportFactory
                                 HttpClientInterface $client = null,
                                 LoggerInterface $logger = null)
     {
-        $site = $siteRepository->getOneBySiteId($sites->getCurrentSiteId());
+        if($sites->hasCurrentSite()) {
+            $site = $siteRepository->getOneBySiteId($sites->getCurrentSiteId());
 
-        $this->host = $site->getSmtpHost();
-        $this->port = $site->getSmtpPort();
-        $this->user = $site->getSmtpUser();
-        $this->password = $site->getSmtpPassword();
+            $this->host = $site->getSmtpHost();
+            $this->port = $site->getSmtpPort();
+            $this->user = $site->getSmtpUser();
+            $this->password = $site->getSmtpPassword();
+        }
 
         parent::__construct($dispatcher, $client, $logger);
     }
