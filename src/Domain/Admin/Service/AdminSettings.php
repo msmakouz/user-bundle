@@ -30,17 +30,14 @@ class AdminSettings
     ];
 
     private EntityManagerInterface $entityManager;
-    private ?int $userId = null;
+    private TokenStorageInterface $tokenStorage;
     private Settings $settings;
 
-    public function __construct(TokenStorageInterface $tokenStorage, EntityManagerInterface $entityManager, Settings $settings)
+    public function __construct(TokenStorageInterface $tokenStorage,
+                                EntityManagerInterface $entityManager,
+                                Settings $settings)
     {
-        $token = $tokenStorage->getToken();
-
-        if(is_null($token) === false && $token->getUser() instanceof UserInterface) {
-            $this->userId = $token->getUser()->getId();
-        }
-
+        $this->tokenStorage = $tokenStorage;
         $this->entityManager = $entityManager;
         $this->settings = $settings;
     }
@@ -57,12 +54,7 @@ class AdminSettings
 
     public function getSettings(): Setting
     {
-        if(is_null($this->userId)) {
-            throw new \DomainException('User not found');
-        }
-
-        $adminSettingRepository = $this->entityManager->getRepository(Setting::class);
-        $settings = $adminSettingRepository->findByUserId($this->userId);
+        $settings = $this->entityManager->getRepository(Setting::class)->findByUserId($this->getUserId());
 
         if(is_null($settings)) {
             $settings = $this->createSettings();
@@ -78,11 +70,22 @@ class AdminSettings
         $settings = new Setting(
             $this->settings->getDefaultLocale(),
             self::DEFAULT_WIDGETS,
-            $userRepository->get($this->userId));
+            $userRepository->get($this->getUserId()));
 
         $this->entityManager->persist($settings);
         $this->entityManager->flush();
 
         return $settings;
+    }
+
+    private function getUserId(): int
+    {
+        $token = $this->tokenStorage->getToken();
+
+        if(is_null($token) || $token->getUser() instanceof UserInterface === false) {
+            throw new \DomainException('User not found');
+        }
+
+        return $token->getUser()->getId();
     }
 }
