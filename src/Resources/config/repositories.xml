@@ -23,10 +23,6 @@
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry"/>
             <tag name="doctrine.repository_service"/>
         </service>
-        <service id="Zentlix\UserBundle\Domain\User\Repository\SiteRepository">
-            <argument type="service" id="Doctrine\Persistence\ManagerRegistry"/>
-            <tag name="doctrine.repository_service"/>
-        </service>
         <service id="Zentlix\UserBundle\Domain\User\Repository\UserRepository">
             <argument type="service" id="Doctrine\Persistence\ManagerRegistry"/>
             <tag name="doctrine.repository_service"/>

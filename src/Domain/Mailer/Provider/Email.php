@@ -17,32 +17,33 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Twig\Environment;
+use Zentlix\MainBundle\Domain\Attribute\Service\Attributes;
 use Zentlix\MainBundle\Domain\Site\Service\Sites;
 use Zentlix\UserBundle\Domain\Mailer\Entity\Template;
 use Zentlix\UserBundle\Domain\Mailer\Event\BeforeSend;
 use Zentlix\UserBundle\Infrastructure\Mailer\Provider\ProviderInterface;
-use Zentlix\UserBundle\Domain\User\Repository\SiteRepository;
+use function is_null;
 
 class Email implements ProviderInterface
 {
     private EventDispatcherInterface $eventDispatcher;
     private MailerInterface $mailer;
-    private SiteRepository $siteRepository;
     private Sites $sites;
     private Environment $twig;
+    private Attributes $attributes;
     private string $defaultLayout;
 
     public function __construct(EventDispatcherInterface $eventDispatcher,
                                 MailerInterface $mailer,
-                                SiteRepository $siteRepository,
                                 Sites $sites,
+                                Attributes $attributes,
                                 Environment $twig,
                                 string $defaultLayout)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->mailer = $mailer;
-        $this->siteRepository = $siteRepository;
         $this->sites = $sites;
+        $this->attributes = $attributes;
         $this->twig = $twig;
         $this->defaultLayout = $defaultLayout;
     }
@@ -59,6 +60,11 @@ class Email implements ProviderInterface
 
     public function send(Template $template, string $defaultTo, array $data = []): void
     {
+        $sender = $this->getSenderEmail();
+        if(is_null($sender)) {
+            return;
+        }
+
         $recipients = array_map(fn(string $email)
             => str_ireplace('%default_to%', $defaultTo, $email), explode(',', trim($template->getRecipient()))
         );
@@ -83,11 +89,11 @@ class Email implements ProviderInterface
         $this->mailer->send($email);
     }
 
-    private function getSenderEmail(): string
+    private function getSenderEmail(): ?string
     {
-        $userSite = $this->siteRepository->getOneBySiteId($this->sites->getCurrentSiteId());
+        $email = $this->attributes->getAttributeValue('zentlix-user-email', $this->sites->getCurrentSiteId());
 
-        return $userSite->getEmail()->getValue();
+        return !is_null($email) ? $email->getValue() : null;
     }
 
     private function getSenderName(): string

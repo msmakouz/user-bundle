@@ -20,8 +20,8 @@ use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
 use Zentlix\UserBundle\Domain\Group\Specification\ExistGroupByCodeSpecification;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
 use Zentlix\UserBundle\Domain\User\Entity\User;
-use Zentlix\UserBundle\Domain\User\Event\User\BeforeUpdate;
-use Zentlix\UserBundle\Domain\User\Event\User\AfterUpdate;
+use Zentlix\UserBundle\Domain\User\Event\BeforeUpdate;
+use Zentlix\UserBundle\Domain\User\Event\AfterUpdate;
 use Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification;
 
 class UpdateHandler implements CommandHandlerInterface

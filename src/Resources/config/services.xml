@@ -17,7 +17,7 @@
 
         <service id="zentlix_user.smtp_transport_factory" class="Zentlix\UserBundle\Infrastructure\Mailer\Transport\SmtpTransportFactory">
             <argument type="service" id="zentlix_main.sites"/>
-            <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\SiteRepository"/>
+            <argument type="service" id="zentlix_main.attribute.service.attributes"/>
             <argument type="service" id="event_dispatcher" on-invalid="null"/>
             <argument type="service" id="Symfony\Contracts\HttpClient\HttpClientInterface" on-invalid="null"/>
             <argument type="service" id="Psr\Log\LoggerInterface" on-invalid="null"/>
@@ -58,8 +58,8 @@
         <service id="zentlix_user.mailer_email_provider" class="Zentlix\UserBundle\Domain\Mailer\Provider\Email">
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="mailer"/>
-            <argument type="service" id="Zentlix\UserBundle\Domain\User\Repository\SiteRepository"/>
             <argument type="service" id="zentlix_main.sites"/>
+            <argument type="service" id="zentlix_main.attribute.service.attributes"/>
             <argument type="service" id="twig"/>
             <argument type="string">%zentlix_user.email_layout_template%</argument>
             <tag name="zentlix_user.mailer.provider"/>

@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
 use Zentlix\UserBundle\Domain\User\Entity\User;
-use Zentlix\UserBundle\Domain\User\Event\User\AfterLogin;
+use Zentlix\UserBundle\Domain\User\Event\AfterLogin;
 
 class UserSubscriber implements EventSubscriberInterface
 {

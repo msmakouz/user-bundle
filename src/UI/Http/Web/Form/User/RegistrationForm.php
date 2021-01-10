@@ -19,7 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zentlix\UserBundle\Application\Command\User\CreateCommand;
-use Zentlix\UserBundle\Domain\User\Event\User\RegistrationForm as RegistrationFormEvent;
+use Zentlix\UserBundle\Domain\User\Event\RegistrationForm as RegistrationFormEvent;
 use Zentlix\MainBundle\UI\Http\Web\Type;
 use Zentlix\MainBundle\UI\Http\Web\FormType\AbstractForm;
 

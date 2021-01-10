@@ -154,23 +154,9 @@ class User implements UserInterface, Eventable
         return $this->id;
     }
 
-    public function setEmail(Email $email): User
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
     public function getEmail(): Email
     {
         return $this->email;
-    }
-
-    public function setFirstName($first_name): User
-    {
-        $this->first_name = $first_name;
-
-        return $this;
     }
 
     public function getFirstName(): ?string
@@ -178,23 +164,9 @@ class User implements UserInterface, Eventable
         return $this->first_name;
     }
 
-    public function setLastName($last_name): User
-    {
-        $this->last_name = $last_name;
-
-        return $this;
-    }
-
     public function getLastName(): ?string
     {
         return $this->last_name;
-    }
-
-    public function setMiddleName(string $middleName): User
-    {
-        $this->middle_name = $middleName;
-
-        return $this;
     }
 
     public function getMiddleName(): ?string
@@ -202,23 +174,9 @@ class User implements UserInterface, Eventable
         return $this->middle_name;
     }
 
-    public function setPhone($phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
     public function getPhone(): ?Phone
     {
         return $this->phone;
-    }
-
-    public function setZip(string $zip): User
-    {
-        $this->zip = $zip;
-
-        return $this;
     }
 
     public function getZip(): ?string
@@ -226,23 +184,9 @@ class User implements UserInterface, Eventable
         return $this->zip;
     }
 
-    public function setCountry($country): User
-    {
-        $this->country = $country;
-
-        return $this;
-    }
-
     public function getCountry(): ?string
     {
         return $this->country;
-    }
-
-    public function setCity($city): User
-    {
-        $this->city = $city;
-
-        return $this;
     }
 
     public function getCity(): ?string
@@ -250,23 +194,9 @@ class User implements UserInterface, Eventable
         return $this->city;
     }
 
-    public function setStreet($street): User
-    {
-        $this->street = $street;
-
-        return $this;
-    }
-
     public function getStreet(): ?string
     {
         return $this->street;
-    }
-
-    public function setHouse($house): User
-    {
-        $this->house = $house;
-
-        return $this;
     }
 
     public function getHouse(): ?string
@@ -274,23 +204,9 @@ class User implements UserInterface, Eventable
         return $this->house;
     }
 
-    public function setFlat($flat): User
-    {
-        $this->flat = $flat;
-
-        return $this;
-    }
-
     public function getFlat()
     {
         return $this->flat;
-    }
-
-    public function setStatus(string $status): User
-    {
-        $this->status = $status;
-
-        return $this;
     }
 
     public function getStatus(): string
@@ -325,15 +241,6 @@ class User implements UserInterface, Eventable
     public function setPassword(string $password): User
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function addGroup(UserGroup $group): User
-    {
-        if(!$this->groups->contains($group)) {
-            $this->groups->add($group);
-        }
 
         return $this;
     }
@@ -438,21 +345,21 @@ class User implements UserInterface, Eventable
      */
     private function setValuesFromCommands($command): void
     {
-        $this->email = $command->getEmailObject();
-        $this->status = $command->status;
-        $this->first_name = $command->first_name;
-        $this->last_name = $command->last_name;
-        $this->middle_name = $command->middle_name;
-        $this->phone = $command->phone;
-        $this->zip = $command->zip;
-        $this->country = $command->country;
-        $this->city = $command->city;
-        $this->street = $command->street;
-        $this->house = $command->house;
-        $this->flat = $command->flat;
+        $this->email           = $command->getEmailObject();
+        $this->status          = $command->status;
+        $this->first_name      = $command->first_name;
+        $this->last_name       = $command->last_name;
+        $this->middle_name     = $command->middle_name;
+        $this->phone           = $command->phone;
+        $this->zip             = $command->zip;
+        $this->country         = $command->country;
+        $this->city            = $command->city;
+        $this->street          = $command->street;
+        $this->house           = $command->house;
+        $this->flat            = $command->flat;
         $this->email_confirmed = $command->email_confirmed;
-        $this->created_at = $command->created_at;
-        $this->updated_at = $command->updated_at;
-        $this->groups = new ArrayCollection($command->groups);
+        $this->created_at      = $command->created_at;
+        $this->updated_at      = $command->updated_at;
+        $this->groups          = new ArrayCollection($command->groups);
     }
 }

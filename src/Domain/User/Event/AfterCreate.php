@@ -10,8 +10,8 @@
 
 declare(strict_types=1);
 
-namespace Zentlix\UserBundle\Application\Query\Mailer\Template;
+namespace Zentlix\UserBundle\Domain\User\Event;
 
-use Zentlix\MainBundle\Infrastructure\Share\Bus\AbstractDataTableQuery;
+use Zentlix\MainBundle\Domain\Shared\Event\AbstractAfterCreate;
 
-class DataTableQuery extends AbstractDataTableQuery {}
+final class AfterCreate extends AbstractAfterCreate {}

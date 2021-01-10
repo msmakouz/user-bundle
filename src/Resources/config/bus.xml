@@ -8,6 +8,7 @@
         <defaults public="false"/>
 
         <!-- Command bus -->
+        <!-- admin settings -->
         <service id="zentlix_user.admin_setting.change_locale_handler" class="Zentlix\UserBundle\Application\Command\AdminSetting\Locale\ChangeLocaleHandler">
             <argument type="service" id="zentlix_user.admin_settings"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
@@ -22,7 +23,9 @@
             <argument type="service" id="zentlix_user.admin.exist_widget_specification"/>
             <tag name="messenger.message_handler"/>
         </service>
+        <!-- end admin settings -->
 
+        <!-- user groups -->
         <service id="zentlix_user.group.create_handler" class="Zentlix\UserBundle\Application\Command\Group\CreateHandler">
             <argument type="service" id="zentlix_user.group.unique_code_specification"/>
             <argument type="service" id="doctrine.orm.entity_manager"/>
@@ -40,13 +43,15 @@
             <argument type="service" id="event_dispatcher"/>
             <tag name="messenger.message_handler"/>
         </service>
+        <!-- end user groups -->
 
+        <!-- mailer -->
         <service id="zentlix_user.mailer.template.create_handler" class="Zentlix\UserBundle\Application\Command\Mailer\Template\CreateHandler">
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="zentlix_user.mailer.exist_event_specification"/>
             <argument type="service" id="zentlix_user.mailer.exist_provider_specification"/>
-            <argument type="service" id="zentlix_main.site_exist_site_specification"/>
+            <argument type="service" id="zentlix_main.site.exist_site_specification"/>
             <argument type="service" id="zentlix_user.mailer.unique_code_specification"/>
             <argument type="service" id="Zentlix\MainBundle\Domain\Site\Repository\SiteRepository"/>
             <tag name="messenger.message_handler"/>
@@ -61,28 +66,14 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="zentlix_user.mailer.exist_event_specification"/>
             <argument type="service" id="zentlix_user.mailer.exist_provider_specification"/>
-            <argument type="service" id="zentlix_main.site_exist_site_specification"/>
+            <argument type="service" id="zentlix_main.site.exist_site_specification"/>
             <argument type="service" id="zentlix_user.mailer.unique_code_specification"/>
             <argument type="service" id="Zentlix\MainBundle\Domain\Site\Repository\SiteRepository"/>
             <tag name="messenger.message_handler"/>
         </service>
+        <!-- end mailer -->
 
-        <service id="zentlix_user.site.create_handler" class="Zentlix\UserBundle\Application\Command\Site\CreateHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="event_dispatcher"/>
-            <tag name="messenger.message_handler"/>
-        </service>
-        <service id="zentlix_user.site.delete_handler" class="Zentlix\UserBundle\Application\Command\Site\DeleteHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="event_dispatcher"/>
-            <tag name="messenger.message_handler"/>
-        </service>
-        <service id="zentlix_user.site.update_handler" class="Zentlix\UserBundle\Application\Command\Site\UpdateHandler">
-            <argument type="service" id="doctrine.orm.entity_manager"/>
-            <argument type="service" id="event_dispatcher"/>
-            <tag name="messenger.message_handler"/>
-        </service>
-
+        <!-- users -->
         <service id="zentlix_user.user.create_handler" class="Zentlix\UserBundle\Application\Command\User\CreateHandler">
             <argument type="service" id="zentlix_user.user.unique_email_specification"/>
             <argument type="service" id="zentlix_user.group.exist_group_by_code_specification"/>
@@ -110,21 +101,22 @@
             <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository"/>
             <tag name="messenger.message_handler"/>
         </service>
+        <!-- end users -->
 
         <!-- Query bus -->
-        <service id="zentlix_user.group.data_table_query" class="Zentlix\UserBundle\Application\Query\Group\DataTableQueryHandler">
+        <service id="zentlix_user.group.data_table_query" class="Zentlix\UserBundle\Application\Query\Group\DataTableHandler">
             <argument type="service" id="zentlix_main.data_table_service"/>
             <tag name="messenger.message_handler"/>
         </service>
-        <service id="zentlix_user.journal.data_table_query" class="Zentlix\UserBundle\Application\Query\Journal\DataTableQueryHandler">
+        <service id="zentlix_user.journal.data_table_query" class="Zentlix\UserBundle\Application\Query\Journal\DataTableHandler">
             <argument type="service" id="zentlix_main.data_table_service"/>
             <tag name="messenger.message_handler"/>
         </service>
-        <service id="zentlix_user.mailer.template.data_table_query" class="Zentlix\UserBundle\Application\Query\Mailer\Template\DataTableQueryHandler">
+        <service id="zentlix_user.mailer.template.data_table_query" class="Zentlix\UserBundle\Application\Query\Mailer\Template\DataTableHandler">
             <argument type="service" id="zentlix_main.data_table_service"/>
             <tag name="messenger.message_handler"/>
         </service>
-        <service id="zentlix_user.user.data_table_query" class="Zentlix\UserBundle\Application\Query\User\DataTableQueryHandler">
+        <service id="zentlix_user.user.data_table_query" class="Zentlix\UserBundle\Application\Query\User\DataTableHandler">
             <argument type="service" id="zentlix_main.data_table_service"/>
             <tag name="messenger.message_handler"/>
         </service>

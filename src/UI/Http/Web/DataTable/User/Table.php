@@ -20,7 +20,7 @@ use Omines\DataTablesBundle\Column\TextColumn;
 use Zentlix\MainBundle\Infrastructure\DataTable\AbstractDataTableType;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 use Zentlix\UserBundle\Domain\User\Entity\User;
-use Zentlix\UserBundle\Domain\User\Event\User\Table as TableEvent;
+use Zentlix\UserBundle\Domain\User\Event\Table as TableEvent;
 
 class Table extends AbstractDataTableType
 {

@@ -27,7 +27,9 @@ class Form extends AbstractForm
     protected TranslatorInterface $translator;
     protected GroupRepository $groupRepository;
 
-    public function __construct(EventDispatcherInterface $eventDispatcher, TranslatorInterface $translator, GroupRepository $groupRepository)
+    public function __construct(EventDispatcherInterface $eventDispatcher,
+                                TranslatorInterface $translator,
+                                GroupRepository $groupRepository)
     {
         $this->eventDispatcher = $eventDispatcher;
         $this->translator = $translator;
@@ -39,12 +41,12 @@ class Form extends AbstractForm
         $builder->add(
             $builder->create('main', Type\FormType::class, ['inherit_data' => true, 'label' => 'zentlix_main.main'])
                 ->add('email', Type\EmailType::class, [
-                    'label' => 'zentlix_user.email',
+                    'label'         => 'zentlix_user.email',
                     'specification' => UniqueEmailSpecification::class
                 ])
                 ->add('groups', Type\ChoiceType::class, [
                     'choices'  => $this->groupRepository->assoc(),
-                    'label' => 'zentlix_user.group.groups',
+                    'label'    => 'zentlix_user.group.groups',
                     'multiple' => true
                 ])
                 ->add('status', Type\ChoiceType::class, [
@@ -63,15 +65,15 @@ class Form extends AbstractForm
                     'required'        => false
                 ])
                 ->add('first_name', Type\TextType::class, [
-                    'label' => 'zentlix_user.first_name',
+                    'label'    => 'zentlix_user.first_name',
                     'required' => false
                 ])
                 ->add('last_name', Type\TextType::class, [
-                    'label' => 'zentlix_user.last_name',
+                    'label'    => 'zentlix_user.last_name',
                     'required' => false
                 ])
                 ->add('middle_name', Type\TextType::class, [
-                    'label' => 'zentlix_user.middle_name',
+                    'label'    => 'zentlix_user.middle_name',
                     'required' => false
                 ])
         );

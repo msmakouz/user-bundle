@@ -17,8 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository;
 use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
-use Zentlix\UserBundle\Domain\User\Event\User\BeforeDelete;
-use Zentlix\UserBundle\Domain\User\Event\User\AfterDelete;
+use Zentlix\UserBundle\Domain\User\Event\BeforeDelete;
+use Zentlix\UserBundle\Domain\User\Event\AfterDelete;
 use function is_null;
 
 class DeleteHandler implements CommandHandlerInterface

@@ -12,6 +12,6 @@ declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Query\Mailer\Template;
 
-use Zentlix\MainBundle\Infrastructure\Share\Bus\AbstractDataTableQuery;
+use Zentlix\MainBundle\Infrastructure\Share\Bus\AbstractDataTableHandler;
 
-class DataTableQuery extends AbstractDataTableQuery {}
+class DataTableHandler extends AbstractDataTableHandler {}

@@ -142,7 +142,7 @@ class Template implements Eventable
         $this->provider  = $command->provider;
         $this->code      = $command->code;
         $this->theme     = $command->theme;
-        $this->body      = $command->body;
+        $this->body      = str_replace('&nbsp;', ' ', $command->body);
         $this->recipient = $command->recipient;
         $this->event     = $command->event;
         $this->sites     = new ArrayCollection($command->sites);

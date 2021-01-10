@@ -3,16 +3,16 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="zentlix_user.twig_extension.user" class="Zentlix\UserBundle\UI\Http\Web\Widget\User">
+        <service id="zentlix_user.twig_extension.user" class="Zentlix\UserBundle\UI\Http\Web\Twig\Extension\UserExtension">
             <argument type="service" id="security.helper"/>
             <tag name="twig.extension"/>
         </service>
-        <service id="zentlix_user.twig_extension.notification" class="Zentlix\UserBundle\UI\Http\Web\Widget\Admin\Notification">
+        <service id="zentlix_user.twig_extension.notification" class="Zentlix\UserBundle\UI\Http\Web\Twig\Extension\Admin\NotificationExtension">
             <argument type="service" id="security.helper"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\NotificationRepository"/>
             <tag name="twig.extension"/>
         </service>
-        <service id="zentlix_user.twig_extension.locale" class="Zentlix\UserBundle\UI\Http\Web\Widget\Admin\Locale">
+        <service id="zentlix_user.twig_extension.locale" class="Zentlix\UserBundle\UI\Http\Web\Twig\Extension\Admin\LocaleExtension">
             <argument type="service" id="zentlix_user.admin_settings"/>
             <argument type="service" id="Zentlix\MainBundle\Domain\Locale\Repository\LocaleRepository"/>
             <tag name="twig.extension"/>

@@ -6,8 +6,7 @@
 
     <services>
         <defaults public="true"/>
-        <service id="zentlix_user.user_controller"
-                 class="Zentlix\UserBundle\UI\Http\Web\Controller\UserController">
+        <service id="Zentlix\UserBundle\UI\Http\Web\Controller\UserController">
             <argument type="service" id="zentlix_main.sites"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="zentlix_main.command_bus"/>

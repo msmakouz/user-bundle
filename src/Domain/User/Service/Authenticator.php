@@ -31,8 +31,8 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Zentlix\UserBundle\Domain\Journal\Entity\Journal;
-use Zentlix\UserBundle\Domain\User\Event\User\BeforeLogin;
-use Zentlix\UserBundle\Domain\User\Event\User\AfterLogin;
+use Zentlix\UserBundle\Domain\User\Event\BeforeLogin;
+use Zentlix\UserBundle\Domain\User\Event\AfterLogin;
 use Zentlix\UserBundle\Domain\User\Entity\User;
 use Zentlix\UserBundle\Domain\User\ValueObject\Email;
 

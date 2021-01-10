@@ -66,6 +66,7 @@ zentlix_user:
 
   group:
     view:   "Просмотр групп пользователя"
+    group:  "Группа пользователя"
     groups: "Группы пользователя"
     create:
       action:  "Добавить группу"
@@ -92,6 +93,7 @@ zentlix_user:
   smtp_host:       "SMTP сервер"
   smtp_port:       "SMTP порт сервера"
   status:          "Статус"
+  theme:           "Тема"
   last_login:      "Последняя авторизация"
   wait_activation: "Ожидает активации"
   updated_at:      "Дата изменения"

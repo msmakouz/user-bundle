@@ -5,6 +5,12 @@
         http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
+        <service id="Zentlix\UserBundle\EventListener\BundleListener">
+            <argument type="service" id="translator"/>
+            <argument type="service" id="zentlix_main.command_bus"/>
+            <tag name="kernel.event_listener"/>
+        </service>
+
         <service id="Zentlix\UserBundle\EventListener\LocaleListener">
             <argument>%kernel.default_locale%</argument>
             <tag name="kernel.event_listener" event="kernel.request" priority="99"/>

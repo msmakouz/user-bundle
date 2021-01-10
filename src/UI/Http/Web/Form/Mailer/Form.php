@@ -60,7 +60,7 @@ class Form extends AbstractForm
                 'help'  => 'zentlix_user.mailer.recipient_hint'
             ])
             ->add('code', Type\TextType::class, ['label' => 'zentlix_main.symbol_code', 'required' => false])
-            ->add('theme', Type\TextType::class, ['label' => 'zentlix_main.theme'])
+            ->add('theme', Type\TextType::class, ['label' => 'zentlix_user.theme'])
             ->add('body', Type\EditorType::class, ['label' => 'zentlix_user.mailer.body']);
     }
 }

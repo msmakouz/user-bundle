@@ -19,8 +19,8 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mailer\Transport\AbstractTransportFactory;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Zentlix\MainBundle\Domain\Attribute\Service\Attributes;
 use Zentlix\MainBundle\Domain\Site\Service\Sites;
-use Zentlix\UserBundle\Domain\User\Repository\SiteRepository;
 
 final class SmtpTransportFactory extends AbstractTransportFactory
 {
@@ -30,18 +30,18 @@ final class SmtpTransportFactory extends AbstractTransportFactory
     private ?string $password = null;
 
     public function __construct(Sites $sites,
-                                SiteRepository $siteRepository,
+                                Attributes $attributes,
                                 EventDispatcherInterface $dispatcher = null,
                                 HttpClientInterface $client = null,
                                 LoggerInterface $logger = null)
     {
         if($sites->hasCurrentSite()) {
-            $site = $siteRepository->getOneBySiteId($sites->getCurrentSiteId());
+            $siteId = $sites->getCurrentSiteId();
 
-            $this->host = $site->getSmtpHost();
-            $this->port = $site->getSmtpPort();
-            $this->user = $site->getSmtpUser();
-            $this->password = $site->getSmtpPassword();
+            $this->host = $attributes->getAttributeValue('zentlix-user-smtp-host', $siteId, '127.0.0.1');
+            $this->port = (int) $attributes->getAttributeValue('zentlix-user-smtp-port', $siteId, 0);
+            $this->user = $attributes->getAttributeValue('zentlix-user-smtp-user', $siteId);;
+            $this->password = $attributes->getAttributeValue('zentlix-user-smtp-password', $siteId);;
         }
 
         parent::__construct($dispatcher, $client, $logger);
@@ -50,9 +50,8 @@ final class SmtpTransportFactory extends AbstractTransportFactory
     public function create(Dsn $dsn): TransportInterface
     {
         $tls = 'zentlix+smtps' === $dsn->getScheme() ? true : null;
-        $host = $this->host ?? '127.0.0.1';
 
-        $transport = new EsmtpTransport($host, $this->port, $tls, $this->dispatcher, $this->logger);
+        $transport = new EsmtpTransport($this->host, $this->port, $tls, $this->dispatcher, $this->logger);
 
         if ($this->user) {
             $transport->setUsername($this->user);
