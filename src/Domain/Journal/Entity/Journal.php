@@ -26,7 +26,7 @@ class Journal
     /**
      * @var UuidInterface
      * @Mapping\Id
-     * @Mapping\Column(type="uuid_binary")
+     * @Mapping\Column(type="uuid", unique=true)
      */
     private $id;
 

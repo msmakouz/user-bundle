@@ -46,6 +46,7 @@ class Command implements CommandInterface
     public bool $email_confirmed = false;
     public \DateTimeImmutable $updated_at;
     public \DateTimeImmutable $created_at;
+    public array $attributes = [];
     protected User $entity;
 
     public $user;

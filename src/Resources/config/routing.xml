@@ -5,10 +5,10 @@
         https://symfony.com/schema/routing/routing-1.0.xsd">
 
     <route id="app_login" path="/login">
-        <default key="_controller">zentlix_user.user_controller::login</default>
+        <default key="_controller">Zentlix\UserBundle\UI\Http\Web\Controller\UserController::login</default>
     </route>
     <route id="app_logout" path="/logout">
-        <default key="_controller">zentlix_user.user_controller::logout</default>
+        <default key="_controller">Zentlix\UserBundle\UI\Http\Web\Controller\UserController::logout</default>
     </route>
     <route id="admin.login" path="/backend/login">
         <default key="_controller">zentlix_user.admin.user_controller::login</default>

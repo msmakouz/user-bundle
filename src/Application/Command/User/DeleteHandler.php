@@ -14,6 +14,7 @@ namespace Zentlix\UserBundle\Application\Command\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zentlix\MainBundle\Domain\Attribute\Service\Attributes;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository;
 use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
@@ -27,16 +28,19 @@ class DeleteHandler implements CommandHandlerInterface
     private EventDispatcherInterface $eventDispatcher;
     private SettingRepository $settingRepository;
     private DataTableRepository $dataTableRepository;
+    private Attributes $attributes;
 
     public function __construct(EntityManagerInterface $entityManager,
                                 EventDispatcherInterface $eventDispatcher,
                                 SettingRepository $settingRepository,
-                                DataTableRepository $dataTableRepository)
+                                DataTableRepository $dataTableRepository,
+                                Attributes $attributes)
     {
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->settingRepository = $settingRepository;
         $this->dataTableRepository = $dataTableRepository;
+        $this->attributes = $attributes;
     }
 
     public function __invoke(DeleteCommand $command): void
@@ -55,6 +59,8 @@ class DeleteHandler implements CommandHandlerInterface
         foreach ($dataTables as $dataTable) {
             $this->entityManager->remove($dataTable);
         }
+
+        $this->attributes->removeValues($userId);
 
         $this->entityManager->remove($command->user);
         $this->entityManager->flush();

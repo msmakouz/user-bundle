@@ -14,6 +14,7 @@ namespace Zentlix\UserBundle\Application\Command\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Zentlix\MainBundle\Domain\Attribute\Service\Attributes;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository;
@@ -33,6 +34,7 @@ class UpdateHandler implements CommandHandlerInterface
     private GroupRepository $groupRepository;
     private ExistGroupByCodeSpecification $existGroupByCodeSpecification;
     private SettingRepository $settingRepository;
+    private Attributes $attributes;
 
     public function __construct(UniqueEmailSpecification $uniqueEmailSpecification,
                                 ExistGroupByCodeSpecification $existGroupByCodeSpecification,
@@ -40,7 +42,8 @@ class UpdateHandler implements CommandHandlerInterface
                                 EventDispatcherInterface $eventDispatcher,
                                 UserPasswordEncoderInterface $passwordEncoder,
                                 GroupRepository $groupRepository,
-                                SettingRepository $settingRepository)
+                                SettingRepository $settingRepository,
+                                Attributes $attributes)
     {
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
         $this->entityManager = $entityManager;
@@ -49,6 +52,7 @@ class UpdateHandler implements CommandHandlerInterface
         $this->groupRepository = $groupRepository;
         $this->existGroupByCodeSpecification = $existGroupByCodeSpecification;
         $this->settingRepository = $settingRepository;
+        $this->attributes = $attributes;
     }
 
     public function __invoke(UpdateCommand $command): void
@@ -60,6 +64,8 @@ class UpdateHandler implements CommandHandlerInterface
         $command->groups = $this->groupRepository->findByCode($command->groups);
 
         $this->eventDispatcher->dispatch(new BeforeUpdate($command));
+
+        $this->attributes->saveValues($user, $command->attributes);
 
         $user->update($command);
         if($command->plain_password) {

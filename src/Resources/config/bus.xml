@@ -82,6 +82,7 @@
             <argument type="service" id="zentlix_user.mailer"/>
             <argument type="service" id="security.password_encoder"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
+            <argument type="service" id="zentlix_main.attribute.service.attributes"/>
             <tag name="messenger.message_handler"/>
         </service>
         <service id="zentlix_user.user.delete_handler" class="Zentlix\UserBundle\Application\Command\User\DeleteHandler">
@@ -89,6 +90,7 @@
             <argument type="service" id="event_dispatcher"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository"/>
             <argument type="service" id="Zentlix\MainBundle\Domain\DataTable\Repository\DataTableRepository"/>
+            <argument type="service" id="zentlix_main.attribute.service.attributes"/>
             <tag name="messenger.message_handler"/>
         </service>
         <service id="zentlix_user.user.update_handler" class="Zentlix\UserBundle\Application\Command\User\UpdateHandler">
@@ -99,6 +101,7 @@
             <argument type="service" id="security.password_encoder"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Admin\Repository\SettingRepository"/>
+            <argument type="service" id="zentlix_main.attribute.service.attributes"/>
             <tag name="messenger.message_handler"/>
         </service>
         <!-- end users -->

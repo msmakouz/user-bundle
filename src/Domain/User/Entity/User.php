@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zentlix\MainBundle\Domain\Shared\Entity\Eventable;
+use Zentlix\MainBundle\Infrastructure\Attribute\Entity\SupportAttributeInterface;
 use Zentlix\UserBundle\Domain\User\ValueObject\Email;
 use Zentlix\UserBundle\Domain\User\ValueObject\Phone;
 use Zentlix\UserBundle\Application\Command\User\CreateCommand;
@@ -28,7 +29,7 @@ use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
  *     @Mapping\UniqueConstraint(columns={"email"})
  * })
  */
-class User implements UserInterface, Eventable
+class User implements UserInterface, Eventable, SupportAttributeInterface
 {
     const STATUS_BLOCKED = 'blocked';
     const STATUS_ACTIVE = 'active';
@@ -338,6 +339,16 @@ class User implements UserInterface, Eventable
         }
 
         return false;
+    }
+
+    public static function getEntityTitle(): string
+    {
+        return 'zentlix_user.user.user';
+    }
+
+    public static function getEntityCode(): string
+    {
+        return 'user';
     }
 
     /**

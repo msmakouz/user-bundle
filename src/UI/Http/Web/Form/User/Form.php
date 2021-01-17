@@ -16,7 +16,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Zentlix\MainBundle\UI\Http\Web\FormType\AbstractForm;
+use Zentlix\MainBundle\UI\Http\Web\FormType\AttributeType;
 use Zentlix\MainBundle\UI\Http\Web\Type;
+use Zentlix\UserBundle\Application\Command\User\UpdateCommand;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
 use Zentlix\UserBundle\Domain\User\Entity\User;
 use Zentlix\UserBundle\Domain\User\Specification\UniqueEmailSpecification;
@@ -38,6 +40,8 @@ class Form extends AbstractForm
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $command = $builder->getData();
+
         $builder->add(
             $builder->create('main', Type\FormType::class, ['inherit_data' => true, 'label' => 'zentlix_main.main'])
                 ->add('email', Type\EmailType::class, [
@@ -77,6 +81,7 @@ class Form extends AbstractForm
                     'required' => false
                 ])
         );
+
         $builder->add(
             $builder->create('address', Type\FormType::class, ['inherit_data' => true, 'label' => 'zentlix_user.address'])
                 ->add('phone', Type\PhoneNumberType::class, [
@@ -108,5 +113,11 @@ class Form extends AbstractForm
                     'required' => false
                 ])
         );
+
+        $builder->add($builder->create('attributes', AttributeType::class, [
+            'label'  => 'zentlix_main.additional',
+            'entity' => $command instanceof UpdateCommand ? $command->getEntity() : null,
+            'code'   => User::getEntityCode()
+        ]));
     }
 }

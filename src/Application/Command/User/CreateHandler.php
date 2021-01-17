@@ -15,6 +15,7 @@ namespace Zentlix\UserBundle\Application\Command\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Zentlix\MainBundle\Domain\Attribute\Service\Attributes;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 use Zentlix\UserBundle\Domain\Group\Repository\GroupRepository;
@@ -35,6 +36,7 @@ class CreateHandler implements CommandHandlerInterface
     private UserPasswordEncoderInterface $passwordEncoder;
     private GroupRepository $groupRepository;
     private ExistGroupByCodeSpecification $existGroupByCodeSpecification;
+    private Attributes $attributes;
 
     public function __construct(UniqueEmailSpecification $uniqueEmailSpecification,
                                 ExistGroupByCodeSpecification $existGroupByCodeSpecification,
@@ -42,7 +44,8 @@ class CreateHandler implements CommandHandlerInterface
                                 EventDispatcherInterface $eventDispatcher,
                                 MailerInterface $mailer,
                                 UserPasswordEncoderInterface $passwordEncoder,
-                                GroupRepository $groupRepository)
+                                GroupRepository $groupRepository,
+                                Attributes $attributes)
     {
         $this->uniqueEmailSpecification = $uniqueEmailSpecification;
         $this->entityManager = $entityManager;
@@ -51,6 +54,7 @@ class CreateHandler implements CommandHandlerInterface
         $this->passwordEncoder = $passwordEncoder;
         $this->groupRepository = $groupRepository;
         $this->existGroupByCodeSpecification = $existGroupByCodeSpecification;
+        $this->attributes = $attributes;
     }
 
     public function __invoke(CreateCommand $command): void
@@ -66,6 +70,8 @@ class CreateHandler implements CommandHandlerInterface
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        $this->attributes->saveValues($user, $command->attributes);
 
         if($command->sendRegistrationEmail) {
             $this->mailer->send(UserRegistration::class, $user->getEmail()->getValue(), ['user' => $user]);

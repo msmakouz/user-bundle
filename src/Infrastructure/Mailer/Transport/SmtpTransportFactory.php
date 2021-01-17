@@ -24,7 +24,7 @@ use Zentlix\MainBundle\Domain\Site\Service\Sites;
 
 final class SmtpTransportFactory extends AbstractTransportFactory
 {
-    private ?string $host = null;
+    private ?string $host = '127.0.0.1';
     private int $port = 0;
     private ?string $user = null;
     private ?string $password = null;
