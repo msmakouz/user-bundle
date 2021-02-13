@@ -18,6 +18,8 @@ use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
 
 class Command implements CommandInterface
 {
+    public $id;
+
     /** @Constraints\NotBlank() */
     public ?string $title = null;
 

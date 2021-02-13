@@ -23,6 +23,7 @@ class Command implements CommandInterface
 {
     use EmailTrait;
 
+    public $id;
     /**
      * @Constraints\NotBlank()
      * @Constraints\Email()

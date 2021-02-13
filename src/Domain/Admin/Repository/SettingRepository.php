@@ -32,7 +32,7 @@ class SettingRepository extends ServiceEntityRepository
         parent::__construct($registry, Setting::class);
     }
 
-    public function findByUserId(int $userId): ?Setting
+    public function findByUserId($userId): ?Setting
     {
         return $this->findOneBy(['user' => $userId]);
     }

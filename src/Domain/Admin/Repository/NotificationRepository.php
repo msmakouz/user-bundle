@@ -32,7 +32,7 @@ class NotificationRepository extends ServiceEntityRepository
         parent::__construct($registry, Notification::class);
     }
 
-    public function findLastByUserId(int $userId): array
+    public function findLastByUserId($userId): array
     {
         return $this->findBy(['user' => $userId], ['date' => 'desc'], 5);
     }

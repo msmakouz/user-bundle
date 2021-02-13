@@ -49,7 +49,7 @@ class Form extends AbstractForm
                     'specification' => UniqueEmailSpecification::class
                 ])
                 ->add('groups', Type\ChoiceType::class, [
-                    'choices'  => $this->groupRepository->assoc(),
+                    'choices'  => array_flip($this->groupRepository->assoc()),
                     'label'    => 'zentlix_user.group.groups',
                     'multiple' => true
                 ])

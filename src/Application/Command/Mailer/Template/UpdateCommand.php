@@ -37,7 +37,7 @@ class UpdateCommand extends Command implements UpdateCommandInterface
 
         /** @var Site $site */
         foreach ($template->getSites()->getValues() as $site) {
-            $this->sites[$site->getId()] = $site->getTitle();
+            $this->sites[$site->getId()->toString()] = $site->getTitle();
         }
         $this->sites = array_flip($this->sites);
     }

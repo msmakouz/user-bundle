@@ -29,7 +29,7 @@ class Table extends AbstractDataTableType
         $dataTable->setName('users-datatable');
 
         $dataTable
-            ->add('id', TextColumn::class, ['label' => 'zentlix_main.id', 'visible' => true])
+            ->add('id', TextColumn::class, ['label' => 'zentlix_main.id', 'visible' => false])
             ->add('email', TwigColumn::class,
                 [
                     'template' => '@UserBundle/admin/users/datatable/title.html.twig',

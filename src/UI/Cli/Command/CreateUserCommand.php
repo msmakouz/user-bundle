@@ -51,7 +51,7 @@ class CreateUserCommand extends ConsoleCommand {
     {
         $io = new SymfonyStyle($input, $output);
 
-        $groups = array_flip($this->groupRepository->assoc());
+        $groups = $this->groupRepository->assoc();
 
         $command = new CreateCommand();
 

@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping;
 use Gedmo\Mapping\Annotation\Slug;
 use Zentlix\MainBundle\Domain\Shared\Entity\Eventable;
 use Zentlix\MainBundle\Domain\Shared\Entity\SortTrait;
+use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 use Zentlix\UserBundle\Application\Command\Group\CreateCommand;
 use Zentlix\UserBundle\Application\Command\Group\UpdateCommand;
 
@@ -35,9 +36,9 @@ class UserGroup implements Eventable
     const ADMIN_GROUP = 'admin-group';
 
     /**
-     * @Mapping\Id()
-     * @Mapping\GeneratedValue()
-     * @Mapping\Column(type="integer")
+     * @var UuidInterface
+     * @Mapping\Id
+     * @Mapping\Column(type="uuid", unique=true)
      */
     private $id;
 
@@ -60,6 +61,8 @@ class UserGroup implements Eventable
 
     public function __construct(CreateCommand $command)
     {
+        $this->id = $command->id;
+
         $this->setValuesFromCommands($command);
     }
 
@@ -72,7 +75,7 @@ class UserGroup implements Eventable
         }
     }
 
-    public function getId(): int
+    public function getId()
     {
         return $this->id;
     }

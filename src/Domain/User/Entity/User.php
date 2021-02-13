@@ -17,6 +17,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zentlix\MainBundle\Domain\Shared\Entity\Eventable;
 use Zentlix\MainBundle\Infrastructure\Attribute\Entity\SupportAttributeInterface;
+use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 use Zentlix\UserBundle\Domain\User\ValueObject\Email;
 use Zentlix\UserBundle\Domain\User\ValueObject\Phone;
 use Zentlix\UserBundle\Application\Command\User\CreateCommand;
@@ -36,9 +37,9 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
     const STATUS_WAIT = 'wait';
 
     /**
-     * @Mapping\Id()
-     * @Mapping\GeneratedValue()
-     * @Mapping\Column(type="integer")
+     * @var UuidInterface
+     * @Mapping\Id
+     * @Mapping\Column(type="uuid", unique=true)
      */
     private $id;
 
@@ -142,6 +143,8 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
 
     public function __construct(CreateCommand $command)
     {
+        $this->id = $command->id;
+
         $this->setValuesFromCommands($command);
     }
 
@@ -150,7 +153,7 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
         $this->setValuesFromCommands($command);
     }
 
-    public function getId(): ?int
+    public function getId()
     {
         return $this->id;
     }

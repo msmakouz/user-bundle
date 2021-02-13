@@ -44,7 +44,7 @@ class GroupRepository extends ServiceEntityRepository
                 ->select('a.code', 'a.title')
                 ->orderBy('a.sort')
                 ->getQuery()
-                ->execute(), 'code', 'title'
+                ->execute(), 'title', 'code'
         );
     }
 }

@@ -78,7 +78,7 @@ class AdminSettings
         return $settings;
     }
 
-    private function getUserId(): int
+    private function getUserId(): string
     {
         $token = $this->tokenStorage->getToken();
 
@@ -86,6 +86,6 @@ class AdminSettings
             throw new \DomainException('User not found');
         }
 
-        return $token->getUser()->getId();
+        return $token->getUser()->getId()->toString();
     }
 }

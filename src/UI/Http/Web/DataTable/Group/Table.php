@@ -27,7 +27,7 @@ class Table extends AbstractDataTableType
         $dataTable->setName('groups-datatable');
 
         $dataTable
-            ->add('id', TextColumn::class, ['label' => 'zentlix_main.id', 'visible' => true])
+            ->add('id', TextColumn::class, ['label' => 'zentlix_main.id', 'visible' => false])
             ->add('title', TwigColumn::class,
                 [
                     'template' => '@UserBundle/admin/groups/datatable/title.html.twig',
