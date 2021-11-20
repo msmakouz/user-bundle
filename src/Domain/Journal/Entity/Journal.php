@@ -1,21 +1,12 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Domain\Journal\Entity;
 
 use Doctrine\ORM\Mapping;
+use Symfony\Component\Uid\Uuid;
 use Zentlix\UserBundle\Domain\User\ValueObject\Email;
-use Zentlix\MainBundle\Infrastructure\Share\Doctrine\Uuid;
-use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 
 /**
  * @Mapping\Entity(repositoryClass="Zentlix\UserBundle\Domain\Journal\Repository\JournalRepository")
@@ -24,7 +15,6 @@ use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 class Journal
 {
     /**
-     * @var UuidInterface
      * @Mapping\Id
      * @Mapping\Column(type="uuid", unique=true)
      */
@@ -53,7 +43,7 @@ class Journal
 
     public function __construct(string $email, string $ip, bool $success = true, string $reason = null)
     {
-        $this->id = Uuid::uuid4();
+        $this->id = Uuid::v4();
         $this->email = new Email($email);
         $this->ip = $ip;
         $this->success = $success;

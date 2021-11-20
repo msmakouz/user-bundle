@@ -4,11 +4,10 @@
   "description": "Zentlix User bundle",
   "license": "proprietary",
   "require": {
-    "php": ">=7.4.0",
-    "symfony/mailer": "4.4.*",
-    "symfony/security-bundle": "4.4.*",
-    "odolbeau/phone-number-bundle": "^3.1",
-    "zentlix/main-bundle": "^1.4"
+    "php": ">=8.0.2",
+    "symfony/mailer": "^5.4 || ^6.0",
+    "symfony/security-bundle": "^5.4 || ^6.0",
+    "zentlix/main-bundle": "2.0.x-dev"
   },
   "require-dev": {
   },
@@ -28,10 +27,6 @@
   "scripts": {
     "test" : "./vendor/bin/simple-phpunit"
   },
-  "extra": {
-    "symfony": {
-      "allow-contrib": false,
-      "require": "4.4.*"
-    }
-  }
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

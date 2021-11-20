@@ -1,13 +1,5 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Domain\Group\Entity;
@@ -16,7 +8,6 @@ use Doctrine\ORM\Mapping;
 use Gedmo\Mapping\Annotation\Slug;
 use Zentlix\MainBundle\Domain\Shared\Entity\Eventable;
 use Zentlix\MainBundle\Domain\Shared\Entity\SortTrait;
-use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 use Zentlix\UserBundle\Application\Command\Group\CreateCommand;
 use Zentlix\UserBundle\Application\Command\Group\UpdateCommand;
 
@@ -36,7 +27,6 @@ class UserGroup implements Eventable
     const ADMIN_GROUP = 'admin-group';
 
     /**
-     * @var UuidInterface
      * @Mapping\Id
      * @Mapping\Column(type="uuid", unique=true)
      */

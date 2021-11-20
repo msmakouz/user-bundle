@@ -1,20 +1,12 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\User;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Zentlix\MainBundle\Domain\Attribute\Service\Attributes;
 use Zentlix\MainBundle\Infrastructure\Share\Bus\CommandHandlerInterface;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
@@ -29,32 +21,16 @@ use Zentlix\UserBundle\Infrastructure\Mailer\Service\MailerInterface;
 
 class CreateHandler implements CommandHandlerInterface
 {
-    private UniqueEmailSpecification $uniqueEmailSpecification;
-    private EntityManagerInterface $entityManager;
-    private EventDispatcherInterface $eventDispatcher;
-    private MailerInterface $mailer;
-    private UserPasswordEncoderInterface $passwordEncoder;
-    private GroupRepository $groupRepository;
-    private ExistGroupByCodeSpecification $existGroupByCodeSpecification;
-    private Attributes $attributes;
-
-    public function __construct(UniqueEmailSpecification $uniqueEmailSpecification,
-                                ExistGroupByCodeSpecification $existGroupByCodeSpecification,
-                                EntityManagerInterface $entityManager,
-                                EventDispatcherInterface $eventDispatcher,
-                                MailerInterface $mailer,
-                                UserPasswordEncoderInterface $passwordEncoder,
-                                GroupRepository $groupRepository,
-                                Attributes $attributes)
-    {
-        $this->uniqueEmailSpecification = $uniqueEmailSpecification;
-        $this->entityManager = $entityManager;
-        $this->eventDispatcher = $eventDispatcher;
-        $this->mailer = $mailer;
-        $this->passwordEncoder = $passwordEncoder;
-        $this->groupRepository = $groupRepository;
-        $this->existGroupByCodeSpecification = $existGroupByCodeSpecification;
-        $this->attributes = $attributes;
+    public function __construct(
+        private UniqueEmailSpecification $uniqueEmailSpecification,
+        private ExistGroupByCodeSpecification $existGroupByCodeSpecification,
+        private EntityManagerInterface $entityManager,
+        private EventDispatcherInterface $eventDispatcher,
+        private MailerInterface $mailer,
+        private UserPasswordHasherInterface $passwordHasher,
+        private GroupRepository $groupRepository,
+        private Attributes $attributes
+    ) {
     }
 
     public function __invoke(CreateCommand $command): void
@@ -66,7 +42,7 @@ class CreateHandler implements CommandHandlerInterface
         $this->eventDispatcher->dispatch(new BeforeCreate($command));
 
         $user = new User($command);
-        $user->setPassword($this->passwordEncoder->encodePassword($user, $command->plain_password));
+        $user->setPassword($this->passwordHasher->hashPassword($user, $command->plain_password));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

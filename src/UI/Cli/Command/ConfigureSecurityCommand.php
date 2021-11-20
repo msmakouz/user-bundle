@@ -1,13 +1,5 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\UI\Cli\Command;
@@ -19,19 +11,14 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 use Zentlix\UserBundle\Domain\User\Entity\User;
-use Zentlix\UserBundle\Domain\User\Service\Authenticator;
 
 class ConfigureSecurityCommand extends ConsoleCommand {
 
-    private Filesystem $filesystem;
-    private string $projectDir;
-
-    public function __construct(Filesystem $filesystem, string $projectDir)
-    {
+    public function __construct(
+        private Filesystem $filesystem,
+        private string $projectDir
+    ) {
         parent::__construct();
-
-        $this->filesystem = $filesystem;
-        $this->projectDir = $projectDir;
     }
 
     protected function configure(): void
@@ -49,6 +36,8 @@ class ConfigureSecurityCommand extends ConsoleCommand {
         $this->filesystem->dumpFile($this->projectDir . '/config/packages/security.yaml', Yaml::dump($this->getConfig(), 6));
 
         $io->success('Security bundle configured successfully!');
+
+        return self::SUCCESS;
     }
 
     private function getConfig(): array
