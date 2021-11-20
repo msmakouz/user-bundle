@@ -46,7 +46,6 @@
 
         </doctrine:orm>
         <doctrine:dbal>
-            <doctrine:type name="phone" class="Zentlix\UserBundle\Infrastructure\Share\Doctrine\PhoneType"/>
             <doctrine:type name="email" class="Zentlix\UserBundle\Infrastructure\Share\Doctrine\EmailType"/>
         </doctrine:dbal>
     </doctrine:config>

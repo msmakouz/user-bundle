@@ -1,13 +1,5 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Application\Command\Mailer\Template;
@@ -37,7 +29,7 @@ class UpdateCommand extends Command implements UpdateCommandInterface
 
         /** @var Site $site */
         foreach ($template->getSites()->getValues() as $site) {
-            $this->sites[$site->getId()->toString()] = $site->getTitle();
+            $this->sites[$site->getId()->toRfc4122()] = $site->getTitle();
         }
         $this->sites = array_flip($this->sites);
     }

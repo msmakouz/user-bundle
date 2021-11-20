@@ -48,7 +48,7 @@
             <argument type="service" id="doctrine.orm.entity_manager"/>
             <argument type="service" id="router"/>
             <argument type="service" id="security.csrf.token_manager"/>
-            <argument type="service" id="security.password_encoder"/>
+            <argument type="service" id="security.password_hasher"/>
             <argument type="service" id="service_container"/>
             <argument type="service" id="translator"/>
             <argument type="service" id="event_dispatcher"/>
@@ -67,6 +67,11 @@
 
         <service id="zentlix_user.mailer_user_registration_event" class="Zentlix\UserBundle\Domain\Mailer\MailEvent\UserRegistration">
             <tag name="zentlix_user.mailer.event"/>
+        </service>
+
+        <service id="Zentlix\UserBundle\Infrastructure\Security\AuthenticationEntryPoint" class="Zentlix\UserBundle\Infrastructure\Security\AuthenticationEntryPoint">
+            <argument type="service" id="router"/>
+            <argument type="service" id="service_container"/>
         </service>
 
         <service id="zentlix_user.user_bundle" class="Zentlix\UserBundle\UserBundle">

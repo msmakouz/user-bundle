@@ -14,7 +14,7 @@
                             {% if error %}
                                 <div class="alert alert-danger">{{ error.messageKey | trans(error.messageData, 'security') }}</div>
                             {% endif %}
-                            <form method="post">
+                            <form method="post" action="{{ path('app_login') }}">
                                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                                 <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -24,8 +24,14 @@
                                     </svg>
                                 </span>
                                 </div>
-                                <input class="form-control {% if error %}is-invalid{% endif %}" type="email"
-                                       placeholder="Email" value="{{ last_username }}" name="email" required autofocus>
+                                <input class="form-control {% if error %}is-invalid{% endif %}"
+                                       type="email"
+                                       placeholder="Email"
+                                       value="{{ last_username }}"
+                                       name="_username"
+                                       required
+                                       autofocus
+                                >
                             </div>
                                 <div class="input-group mb-4">
                                 <div class="input-group-prepend">
@@ -35,8 +41,12 @@
                                     </svg>
                                 </span>
                                 </div>
-                                <input class="form-control {% if error %}is-invalid{% endif %}" type="password" name="password"
-                                       placeholder="{{ 'zentlix_user.password' | trans }}" required>
+                                <input class="form-control {% if error %}is-invalid{% endif %}"
+                                       type="password"
+                                       name="_password"
+                                       placeholder="{{ 'zentlix_user.password' | trans }}"
+                                       required
+                                >
                             </div>
                                 <div class="row">
                                 <div class="col-6">
@@ -46,6 +56,7 @@
                                     <button class="btn btn-link px-0" type="button">Forgot password?</button>
                                 </div>-->
                             </div>
+                                <input type="hidden" name="_target_path" value="{{ path('admin.index') }}">
                             </form>
                         </div>
                     </div>

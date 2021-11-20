@@ -1,25 +1,16 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\Domain\User\Entity;
 
 use Doctrine\ORM\Mapping;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Zentlix\MainBundle\Domain\Shared\Entity\Eventable;
 use Zentlix\MainBundle\Infrastructure\Attribute\Entity\SupportAttributeInterface;
-use Zentlix\MainBundle\Infrastructure\Share\Doctrine\UuidInterface;
 use Zentlix\UserBundle\Domain\User\ValueObject\Email;
-use Zentlix\UserBundle\Domain\User\ValueObject\Phone;
 use Zentlix\UserBundle\Application\Command\User\CreateCommand;
 use Zentlix\UserBundle\Application\Command\User\UpdateCommand;
 use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
@@ -30,14 +21,13 @@ use Zentlix\UserBundle\Domain\Group\Entity\UserGroup;
  *     @Mapping\UniqueConstraint(columns={"email"})
  * })
  */
-class User implements UserInterface, Eventable, SupportAttributeInterface
+class User implements UserInterface, Eventable, SupportAttributeInterface, PasswordAuthenticatedUserInterface
 {
     const STATUS_BLOCKED = 'blocked';
     const STATUS_ACTIVE = 'active';
     const STATUS_WAIT = 'wait';
 
     /**
-     * @var UuidInterface
      * @Mapping\Id
      * @Mapping\Column(type="uuid", unique=true)
      */
@@ -59,8 +49,8 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
     private $middle_name;
 
     /**
-     * @var Phone
-     * @Mapping\Column(type="phone", length=35, nullable=true)
+     * @var string
+     * @Mapping\Column(type="string", length=35, nullable=true)
      */
     private $phone;
 
@@ -178,7 +168,7 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
         return $this->middle_name;
     }
 
-    public function getPhone(): ?Phone
+    public function getPhone(): ?string
     {
         return $this->phone;
     }
@@ -239,7 +229,7 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
 
     public function getPassword(): string
     {
-        return (string) $this->password;
+        return $this->password;
     }
 
     public function setPassword(string $password): User
@@ -375,5 +365,10 @@ class User implements UserInterface, Eventable, SupportAttributeInterface
         $this->created_at      = $command->created_at;
         $this->updated_at      = $command->updated_at;
         $this->groups          = new ArrayCollection($command->groups);
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email->getValue();
     }
 }

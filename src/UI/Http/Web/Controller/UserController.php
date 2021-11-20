@@ -1,38 +1,77 @@
 <?php
 
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade Zentlix to newer
- * versions in the future. If you wish to customize Zentlix for your
- * needs please refer to https://docs.zentlix.io for more information.
- */
-
 declare(strict_types=1);
 
 namespace Zentlix\UserBundle\UI\Http\Web\Controller;
 
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\Security\Http\Authenticator\FormLoginAuthenticator;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
+use Zentlix\MainBundle\Domain\Site\Service\Sites;
+use Zentlix\MainBundle\Infrastructure\Share\Bus;
+use Zentlix\MainBundle\UI\Http\Web\Controller\AbstractSiteController;
 use Zentlix\UserBundle\Application\Command\User\CreateCommand;
-use Zentlix\UserBundle\Domain\User\Service\Authenticator;
 use Zentlix\UserBundle\UI\Http\Web\Form\User\RegistrationForm;
-use Zentlix\MainBundle\UI\Http\Web\Controller\AbstractController;
 
-class UserController extends AbstractController
+class UserController extends AbstractSiteController
 {
+    public function __construct(
+        Sites $sites,
+        HttpFoundation\RequestStack
+        $requestStack,
+        SerializerInterface
+        $serializer,
+        AuthorizationCheckerInterface
+        $authorizationChecker,
+        FormFactoryInterface $formFactory,
+        ParameterBag $parameterBag,
+        RouterInterface $router,
+        TranslatorInterface $translator,
+        Environment $twig,
+        TokenStorageInterface $tokenStorage,
+        Bus\CommandBus $commandBus,
+        Bus\QueryBus $queryBus,
+        private UserAuthenticatorInterface $userAuthenticator,
+        private FormLoginAuthenticator $authenticator
+    )
+    {
+        parent::__construct(
+            $sites,
+            $requestStack,
+            $serializer,
+            $authorizationChecker,
+            $formFactory,
+            $parameterBag,
+            $router,
+            $translator,
+            $twig,
+            $tokenStorage,
+            $commandBus,
+            $queryBus
+        );
+    }
+
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('index');
         }
 
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render($this->template->getConfigParam('user.login', $this->container->getParameter('zentlix_user.login_template')), [
+        return $this->render($this->template->getConfigParam('user.login', $this->parameterBag->get('zentlix_user.login_template')), [
             'last_username' => $lastUsername,
             'error' => $error
         ]);
@@ -40,43 +79,40 @@ class UserController extends AbstractController
 
     public function profile(): Response
     {
-        if ($this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY') === false) {
+        if ($this->authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') === false) {
             return $this->redirectToRoute('index');
         }
 
-        return $this->render($this->template->getConfigParam('user.profile', $this->container->getParameter('zentlix_user.profile_template')), [
+        return $this->render($this->template->getConfigParam('user.profile', $this->parameterBag->get('zentlix_user.profile_template')), [
             'user' => $this->getUser()
         ]);
     }
 
-    public function register(Request $request, GuardAuthenticatorHandler $guardHandler, Authenticator $authenticator): Response
+    public function register(Request $request): Response
     {
         $command = new CreateCommand();
-        $form = $this->createForm(RegistrationForm::class, $command);
+        $form = $this->formFactory->create(RegistrationForm::class, $command);
 
         try {
             $form->handleRequest($request);
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->exec($command);
 
-                return $guardHandler->authenticateUserAndHandleSuccess(
+                return $this->userAuthenticator->authenticateUser(
                     $command->user,
-                    $request,
-                    $authenticator,
-                    'user_secured_area'
+                    $this->authenticator,
+                    $this->requestStack->getCurrentRequest()
                 );
             }
         } catch (\Exception $e) {
-            return $this->render($this->template->getConfigParam('user.registration', $this->container->getParameter('zentlix_user.register_template')), [
+            return $this->render($this->template->getConfigParam('user.registration', $this->parameterBag->get('zentlix_user.register_template')), [
                 'form' => $form->createView(),
                 'error' => $e->getMessage()
             ]);
         }
 
-        return $this->render($this->template->getConfigParam('user.registration', $this->container->getParameter('zentlix_user.register_template')), [
+        return $this->render($this->template->getConfigParam('user.registration', $this->parameterBag->get('zentlix_user.register_template')), [
             'form' => $form->createView()
         ]);
     }
-
-    public function logout(): Response {}
 }

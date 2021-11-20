@@ -10,7 +10,6 @@
         <service id="zentlix_user.create_user_command" class="Zentlix\UserBundle\UI\Cli\Command\CreateUserCommand">
             <argument type="service" id="zentlix_main.command_bus"/>
             <argument type="service" id="Zentlix\UserBundle\Domain\Group\Repository\GroupRepository"/>
-            <argument type="service" id="libphonenumber\PhoneNumberUtil"/>
             <tag name="console.command"/>
         </service>
         <service id="zentlix_user.configure_security_command" class="Zentlix\UserBundle\UI\Cli\Command\ConfigureSecurityCommand">
